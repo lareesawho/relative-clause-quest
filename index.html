@@ -4,14 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>定语从句大师 — Relative Clause Master</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>◈</text></svg>">
 <style>
-:root{--bg:#ffffff;--sect:#f5f5f7;--black:#000000;--near:#1d1d1f;--text:rgba(0,0,0,.8);--dim:rgba(0,0,0,.48);--blue:#0071e3;--blueh:#0066cc;--blued:#2997ff;--green:#34c759;--red:#ff3b30;--radius:8px;--pill:980px;--fp:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;--fm:'SF Mono (system)',ui-monospace,Menlo,Monaco,Consolas,monospace}
+:root{--bg:#ffffff;--sect:#f5f5f7;--black:#000000;--near:#1d1d1f;--text:rgba(0,0,0,.85);--dim:rgba(0,0,0,.55);--blue:#0071e3;--blueh:#0066cc;--blued:#2997ff;--green:#34c759;--red:#ff3b30;--radius:8px;--pill:980px;--fp:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;--fm:ui-monospace,Menlo,Monaco,Consolas,monospace}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--fp);color:var(--near);background:var(--bg);line-height:1.47;letter-spacing:-.374px;min-height:100dvh;display:flex;flex-direction:column;align-items:center;-webkit-font-smoothing:antialiased}
+/* nav touch targets ≥44px */
 nav{position:sticky;top:0;z-index:100;width:100%;height:48px;background:rgba(0,0,0,.85);backdrop-filter:saturate(180%)blur(20px);-webkit-backdrop-filter:saturate(180%)blur(20px);display:flex;align-items:center;justify-content:center}
 nav .inner{width:100%;max-width:980px;display:flex;align-items:center;justify-content:space-between;padding:0 22px}
-nav a{color:#fff;text-decoration:none;font-size:12px;font-weight:400;transition:.2s}
+nav a{color:#fff;text-decoration:none;font-size:13px;font-weight:400;transition:.2s;padding:10px 12px;display:inline-block;min-height:44px;line-height:24px}
+nav a:focus-visible{outline:2px solid var(--blued);outline-offset:2px;border-radius:4px}
 nav a:hover{opacity:.7}
 nav .logo{font-size:18px;font-weight:600;letter-spacing:-.5px}
 .section{width:100%;padding:80px 24px 100px}
@@ -21,16 +24,16 @@ nav .logo{font-size:18px;font-weight:600;letter-spacing:-.5px}
 .inner{max-width:980px;margin:0 auto;width:100%}
 h1{font-family:var(--fp);font-size:clamp(28px,5vw,56px);font-weight:600;line-height:1.07;letter-spacing:-.28px;margin-bottom:8px}
 h2{font-size:clamp(22px,3.5vw,40px);font-weight:600;line-height:1.1;letter-spacing:normal;margin-bottom:4px}
-h3{font-size:clamp(16px,2.5vw,28px);font-weight:400;line-height:1.14;letter-spacing:.196px;margin-bottom:16px;color:var(--dim)}
 p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:var(--text)}
 .dark p{color:rgba(255,255,255,.8)}
-.dark h3{color:rgba(255,255,255,.65)}
+/* phase cards: keyboard-accessible buttons */
 .phase-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:40px}
-.phase-card{background:var(--bg);border-radius:var(--radius);padding:24px;cursor:pointer;transition:all .2s;border:none;text-align:left;position:relative;overflow:hidden}
-.dark .phase-card{background:rgba(255,255,255,.08)}
+.phase-card{background:var(--bg);border-radius:var(--radius);padding:24px;cursor:pointer;transition:all .2s;border:none;text-align:left;position:relative;overflow:hidden;display:block;width:100%;font-family:var(--fp);font-size:inherit;color:inherit;min-height:120px}
+.dark .phase-card{background:rgba(255,255,255,.08);color:#fff}
 .light .phase-card{box-shadow:0 2px 20px rgba(0,0,0,.06)}
-.phase-card:hover{transform:translateY(-2px)}
-.dark .phase-card:hover{background:rgba(255,255,255,.12)}
+.phase-card:not(.locked):hover{transform:translateY(-2px)}
+.dark .phase-card:not(.locked):hover{background:rgba(255,255,255,.12)}
+.phase-card:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 .phase-card .num{font-size:12px;font-weight:600;color:var(--dim);margin-bottom:4px;font-family:var(--fm)}
 .dark .phase-card .num{color:rgba(255,255,255,.4)}
 .phase-card .name{font-size:17px;font-weight:600;margin-bottom:4px;line-height:1.3}
@@ -38,8 +41,9 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 .dark .phase-card .desc{color:rgba(255,255,255,.5)}
 .phase-card .check{display:inline-block;margin-top:10px;font-size:12px;color:var(--blue);font-weight:600}
 .dark .phase-card .check{color:var(--blued)}
-.phase-card.locked{opacity:.4;pointer-events:none}
+.phase-card.locked{opacity:.4;pointer-events:none;cursor:default}
 .phase-card .status{position:absolute;top:12px;right:16px;font-size:14px}
+/* question card */
 .q-card{background:var(--bg);border-radius:12px;padding:32px 28px;max-width:680px;margin:0 auto}
 .dark .q-card{background:rgba(255,255,255,.1)}
 .light .q-card,.white .q-card{box-shadow:0 4px 30px rgba(0,0,0,.08)}
@@ -48,16 +52,19 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 .dark .q-prompt small{color:rgba(255,255,255,.5)}
 .options{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
 .opt{display:block;width:100%;padding:12px 16px;border:2px solid var(--sect);border-radius:var(--radius);background:transparent;font-size:14px;text-align:left;cursor:pointer;transition:all .15s;font-family:var(--fp);color:inherit;min-height:44px;line-height:1.4}
+.dark .opt{border-color:rgba(255,255,255,.15);color:#fff}
 .opt:hover{border-color:var(--blue)}
+.opt:focus-visible{outline:3px solid var(--blue);outline-offset:1px;border-color:var(--blue)}
 .opt.selected{border-color:var(--blue);background:rgba(0,113,227,.06)}
-.dark .opt{border-color:rgba(255,255,255,.15)}
 .dark .opt.selected{background:rgba(0,113,227,.15)}
 .opt.correct{background:var(--green);color:#fff;border-color:var(--green)}
 .opt.wrong{background:var(--red);color:#fff;border-color:var(--red)}
 .opt:disabled{cursor:default}
 .opt.correct::after{content:' ✓';font-weight:700}
 .opt.wrong::after{content:' ✗';font-weight:700}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:8px 16px;border-radius:var(--pill);font-size:14px;font-weight:400;border:none;cursor:pointer;transition:all .2s;min-height:44px;font-family:var(--fp);text-decoration:none}
+/* button base */
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:8px 16px;border-radius:var(--pill);font-size:14px;font-weight:400;border:none;cursor:pointer;transition:all .2s;min-height:44px;min-width:44px;font-family:var(--fp);text-decoration:none}
+.btn:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 .btn-primary{background:var(--blue);color:#fff}
 .btn-primary:hover{opacity:.85}
 .btn-primary:disabled{opacity:.4;pointer-events:none}
@@ -66,6 +73,7 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 .dark .btn-outline{color:var(--blued);border-color:var(--blued)}
 .dark .btn-outline:hover{background:var(--blued);color:var(--black)}
 .btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+/* progress */
 .progress-wrap{display:flex;align-items:center;gap:12px;margin-bottom:12px}
 .progress-bar{flex:1;height:4px;background:var(--sect);border-radius:2px;overflow:hidden}
 .dark .progress-bar{background:rgba(255,255,255,.15)}
@@ -73,41 +81,42 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 .progress-txt{font-size:12px;color:var(--dim);font-family:var(--fm);white-space:nowrap}
 .dark .progress-txt{color:rgba(255,255,255,.4)}
 .phase-label{font-size:14px;font-weight:600;margin-bottom:4px}
-.score{font-size:14px;color:var(--dim);margin-bottom:16px;font-family:var(--fm)}
-.dark .score{color:rgba(255,255,255,.5)}
 .explanation{margin-top:16px;padding:14px 18px;border-radius:8px;font-size:13px;line-height:1.6;display:none}
 .explanation.show{display:block}
 .explanation.correct{background:rgba(52,199,89,.1);border-left:3px solid var(--green)}
 .explanation.wrong{background:rgba(255,59,48,.1);border-left:3px solid var(--red)}
 .dark .explanation.correct{background:rgba(52,199,89,.15)}
 .dark .explanation.wrong{background:rgba(255,59,48,.15)}
-.complete{text-align:center}
-.complete .icon{font-size:64px;margin-bottom:16px}
-.complete .stats{font-size:17px;color:var(--dim);margin:12px 0}
-.dark .complete .stats{color:rgba(255,255,255,.5)}
-.complete .stars{font-size:32px;margin:8px 0;letter-spacing:4px}
+/* complete */
+.stars{font-size:32px;margin:8px 0;letter-spacing:4px}
 .star-filled{color:var(--blue)}
 .star-empty{color:var(--sect)}
 .dark .star-empty{color:rgba(255,255,255,.15)}
-.back-btn{position:fixed;top:60px;left:16px;z-index:99;background:transparent;border:none;color:var(--blue);font-size:28px;cursor:pointer;padding:8px;display:none;line-height:1}
+/* back btn */
+.back-btn{position:fixed;top:60px;left:16px;z-index:99;background:transparent;border:none;color:var(--blue);font-size:28px;cursor:pointer;padding:8px 12px;display:none;line-height:1;min-width:44px;min-height:44px;text-align:center}
+.back-btn:focus-visible{outline:3px solid var(--blue);outline-offset:1px}
 .dark .back-btn{color:var(--blued)}
+/* mastery */
 .mastery{display:flex;justify-content:center;gap:8px;margin:16px 0;flex-wrap:wrap}
-.mastery span{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--dim);font-family:var(--fm)}
+.mastery span{align-items:center;gap:4px;font-size:12px;color:var(--dim);font-family:var(--fm)}
 .dark .mastery span{color:rgba(255,255,255,.4)}
-.mastery .filled{color:var(--blue)}
-.mastery .empty{color:var(--sect)}
-.dark .mastery .empty{color:rgba(255,255,255,.1)}
-.reset{font-size:11px;color:var(--dim);text-decoration:underline;cursor:pointer;margin-top:24px;display:inline-block;opacity:.5;transition:.2s;background:none;border:none;font-family:var(--fp)}
-.reset:hover{opacity:1}
+/* reset + export row */
+.tool-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.tool-btn{font-size:11px;color:var(--dim);text-decoration:underline;cursor:pointer;background:none;border:none;font-family:var(--fp);padding:6px 8px;min-height:44px;min-width:44px;display:inline-flex;align-items:center;gap:4px}
+.tool-btn:hover{opacity:1;color:var(--near)}
+.dark .tool-btn{color:rgba(255,255,255,.4)}
+.dark .tool-btn:hover{color:#fff}
 @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeIn .3s ease-out}
+/* live-region screenreader-only */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 @media(max-width:600px){
   .section{padding:48px 16px 64px}
   .q-card{padding:20px 16px}
   .phase-grid{grid-template-columns:1fr}
   .q-prompt{font-size:16px}
   h1{letter-spacing:-.15px}
-  .back-btn{left:8px}
+  .back-btn{left:4px;top:56px}
 }
 </style>
 </head>
@@ -115,16 +124,22 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 
 <nav>
   <div class="inner">
-    <a href="#" class="logo" onclick="showHome()">◈</a>
-    <a href="#" onclick="showHome()">首页</a>
+    <a href="#" class="logo" onclick="showHome();return false">◈</a>
+    <a href="#" onclick="showHome();return false">首页</a>
   </div>
 </nav>
 
-<button class="back-btn" id="backBtn" onclick="showHome()">←</button>
+<button class="back-btn" id="backBtn" onclick="showHome()" aria-label="返回首页">←</button>
 
 <div id="app"></div>
 
+<!-- Live region for screen-reader announcements -->
+<div id="announce" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
+
 <script>
+// ==================== CURRICULUM DATA ====================
+// Multi-answer support: 'a' can be string or array of accepted answers.
+// When array, norm(s) is matched against each element.
 const DATA = {title:'定语从句大师',phases:[
 {id:'rec',name:'识别定语从句',s:'你能找出定语从句吗？',d:'在句子中找出定语从句的部分',q:[
 {q:'下面哪个部分是定语从句？<br><em>The woman <u>who called me</u> is my manager.</em>',a:'who called me',o:['The woman','who called me','is my manager','my manager']},
@@ -134,29 +149,29 @@ const DATA = {title:'定语从句大师',phases:[
 {q:'先行词（被修饰的名词）是哪个？<br><em>I use a phone that never crashes.</em>',a:'a phone',o:['I use','a phone','that never crashes','never crashes']},
 ]},
 {id:'subj',name:'指人+作主语',s:'关系代词=主语',d:'关系代词（who/that）在从句中作主语，后面直接跟动词',q:[
-{q:'The woman ___ called me is my manager.',a:'who',o:['who','which','where','whom'],t:'who 指人，在从句中作主语'},
-{q:'The doctor ___ treated me was kind. (医生) 指人，作主语',a:'who',o:['which','who','that','whom'],t:'指人作主语 → who/that'},
-{q:'I need a tool ___ can fix this. (工具) 指物作主语',a:'that',o:['who','that','where','whom'],t:'指物作主语 → that/which'},
-{q:'The train ___ arrives at 3 PM is delayed.',a:'that',o:['who','that','where','when'],t:'火车(train)是物，作主语 → that/which'},
-{q:'A friend ___ helps you is priceless.',a:'who',o:['which','who','that','where'],t:'朋友(friend)指人，作主语 → who/that'},
-{q:'People ___ exercise regularly live longer.',a:'who',o:['who','which','where','whom'],t:'人作主语 → who/that'},
-{q:'The package ___ arrived today is from Amazon.',a:'that',o:['who','that','where','when'],t:'包裹(package)是物 → that/which'},
+{q:'The woman ___ called me is my manager.',a:['who','that'],o:['who','which','where','whom'],t:'who 指人作主语 → who 或 that 都可以'},
+{q:'The doctor ___ treated me was kind. (医生) 指人，作主语',a:['who','that'],o:['which','who','that','whom'],t:'指人作主语 → who/that'},
+{q:'I need a tool ___ can fix this. (工具) 指物作主语',a:['that','which'],o:['who','that','where','whom'],t:'指物作主语 → that/which'},
+{q:'The train ___ arrives at 3 PM is delayed.',a:['that','which'],o:['who','that','where','when'],t:'火车(train)是物，作主语 → that/which'},
+{q:'A friend ___ helps you is priceless.',a:['who','that'],o:['which','who','that','where'],t:'朋友(friend)指人，作主语 → who/that'},
+{q:'People ___ exercise regularly live longer.',a:['who','that'],o:['who','which','where','whom'],t:'人作主语 → who/that'},
+{q:'The package ___ arrived today is from Amazon.',a:['that','which'],o:['who','that','where','when'],t:'包裹(package)是物 → that/which'},
 ]},
 {id:'obj',name:'指人/物+作宾语',s:'关系代词=宾语',d:'从句有自己的主语。关系代词是动作的接受者——"被……的人/物"',q:[
-{q:'The file ___ you sent is open.',a:'that',o:['who','that','where','whom'],t:'file是sent的宾语，指物 → that/which'},
-{q:'The movie ___ we watched was boring.',a:'that',o:['who','that','which','whom'],t:'movie是watched的宾语 → that/which'},
-{q:'The client ___ we met yesterday is from Tokyo.',a:'whom',o:['who','whom','which','that'],t:'指人作宾语 → 正式用法用 whom'},
-{q:'The people ___ I invited are coming.',a:'whom',o:['who','whom','which','that'],t:'人作宾语 → whom (正式)'},
-{q:'The report ___ Anna wrote is on the table.',a:'that',o:['who','that','which','where'],t:'report是wrote的宾语 → that/which'},
-{q:'The advice ___ she gave me was helpful.',a:'that',o:['who','that','which','where'],t:'advice是gave的宾语 → that/which'},
+{q:'The file ___ you sent is open.',a:['that','which'],o:['who','that','where','whom'],t:'file是sent的宾语，指物 → that/which'},
+{q:'The movie ___ we watched was boring.',a:['that','which'],o:['who','that','which','whom'],t:'movie是watched的宾语 → that/which'},
+{q:'The client ___ we met yesterday is from Tokyo.',a:['whom','that'],o:['who','whom','which','that'],t:'指人作宾语 → whom(正式) 或 that(非正式)'},
+{q:'The people ___ I invited are coming.',a:['whom','that'],o:['who','whom','which','that'],t:'人作宾语 → whom(正式) 或 that(非正式)'},
+{q:'The report ___ Anna wrote is on the table.',a:['that','which'],o:['who','that','which','where'],t:'report是wrote的宾语 → that/which'},
+{q:'The advice ___ she gave me was helpful.',a:['that','which'],o:['who','that','which','where'],t:'advice是gave的宾语 → that/which'},
 ]},
 {id:'subobj',name:'区分：主语vs宾语',s:'技巧：找额外的主语',d:'从句中已经有主语 → 关系代词是宾语。从句中没有额外主语 → 关系代词是主语',q:[
-{q:'<b>who called</b> me — who 是主语还是宾语？',a:'subject',o:['subject（主语）','object（宾语）'],t:'who自己就是called的主语'},
-{q:'<b>who I called</b> — 谁在从句中作主语？who是主语还是宾语？',a:'object',o:['subject（主语）','object（宾语）'],t:'I是主语，who是called的宾语 (= called who)'},
+{q:'<b>who called</b> me — who 是主语还是宾语？',a:'subject（主语）',o:['subject（主语）','object（宾语）'],t:'who自己就是called的主语'},
+{q:'<b>who I called</b> — 谁在从句中作主语？who是主语还是宾语？',a:'object（宾语）',o:['subject（主语）','object（宾语）'],t:'I是主语，who是called的宾语 (= called who)'},
 {q:'改正：The man who he called me is my neighbor. 哪个词多余？',a:'he',o:['who','he','man','neighbor'],t:'who已经代表"那个人"了，不需要再加he'},
 {q:'改正：The report that Anna wrote it is ready. 哪个词多余？',a:'it',o:['that','Anna','wrote','it'],t:'that已经代表the report了，不需要it'},
-{q:'The student ___ answered correctly won a prize. 主语还是宾语？',a:'subject',o:['subject（主语）','object（宾语）'],t:'"回答"这个动作是学生(student)发出的 → 主语'},
-{q:'The student ___ the teacher praised won a prize. 主语还是宾语？',a:'object',o:['subject（主语）','object（宾语）'],t:'"表扬"(praised)是老师发出的，学生是被表扬的 → 宾语'},
+{q:'The student ___ answered correctly won a prize. 主语还是宾语？',a:'subject（主语）',o:['subject（主语）','object（宾语）'],t:'"回答"这个动作是学生(student)发出的 → 主语'},
+{q:'The student ___ the teacher praised won a prize. 主语还是宾语？',a:'object（宾语）',o:['subject（主语）','object（宾语）'],t:'"表扬"(praised)是老师发出的，学生是被表扬的 → 宾语'},
 ]},
 {id:'oblq',name:'where/when/why',s:'地点·时间·原因',d:'where=地点(＝in which), when=时间(＝on which), why=原因(＝for which)',q:[
 {q:'This is the cafe ___ we met.',a:'where',o:['who','which','where','when'],t:'cafe是地点 → where (= in which)'},
@@ -190,29 +205,34 @@ const DATA = {title:'定语从句大师',phases:[
 {id:'prod',name:'综合运用',s:'合并句子',d:'把两个句子合并成一句，用定语从句连接',q:[
 {q:'合并：A customer called. She ordered yesterday.',a:'The customer who ordered yesterday called.',o:['The customer who ordered yesterday called.','The customer called who ordered yesterday.','A customer called she ordered yesterday.']},
 {q:'合并：I met a designer. She created our website.',a:'I met a designer who created our website.',o:['I met a designer who created our website.','I met who created our website a designer.','I met a designer she created our website.']},
-{q:'合并：That was the summer. We traveled to Japan that summer.',a:'That was the summer when we traveled to Japan.',o:['That was the summer when we traveled to Japan.','That was the summer that we traveled to Japan.','That was the summer we traveled to Japan when.']},
-{q:'合并：I found a book. It explains grammar.',a:'I found a book which explains grammar.',o:['I found a book which explains grammar.','I found a book it explains grammar.','I found which explains grammar a book.']},
-{q:'合并：We visited a museum. It has ancient art.',a:'We visited a museum that has ancient art.',o:['We visited a museum that has ancient art.','We visited a museum it has ancient art.','We visited that has ancient art a museum.']},
+{q:'合并：That was the summer. We traveled to Japan that summer.',a:['That was the summer when we traveled to Japan.','That was the summer that we traveled to Japan.'],o:['That was the summer when we traveled to Japan.','That was the summer that we traveled to Japan.','That was the summer we traveled to Japan when.']},
+{q:'合并：I found a book. It explains grammar.',a:['I found a book which explains grammar.','I found a book that explains grammar.'],o:['I found a book which explains grammar.','I found a book that explains grammar.','I found a book it explains grammar.','I found which explains grammar a book.']},
+{q:'合并：We visited a museum. It has ancient art.',a:['We visited a museum that has ancient art.','We visited a museum which has ancient art.'],o:['We visited a museum that has ancient art.','We visited a museum which has ancient art.','We visited a museum it has ancient art.','We visited that has ancient art a museum.']},
 {q:'调整语序："The package arrived today that I ordered." 从句要跟着先行词',a:'The package that I ordered arrived today.',o:['The package that I ordered arrived today.','The package arrived today that I ordered.','The package that arrived today I ordered.']},
-{q:'改正："This is the hotel where I recommended it to you." 推荐(recommend)的宾语是酒店',a:'This is the hotel that I recommended to you.',o:['This is the hotel that I recommended to you.','This is the hotel where I recommended to you.','This is the hotel where I recommended it to you.']},
+{q:'改正："This is the hotel where I recommended it to you." 推荐(recommend)的宾语是酒店',a:['This is the hotel that I recommended to you.','This is the hotel which I recommended to you.'],o:['This is the hotel that I recommended to you.','This is the hotel which I recommended to you.','This is the hotel where I recommended to you.','This is the hotel where I recommended it to you.']},
 ]},
 ]};
 
 // ==================== STATE ====================
 const S={active:null,idx:0,score:0,total:0,phaseQs:[],answered:false,sel:null,
-  progress:JSON.parse(localStorage.getItem('rcq3_prog')||'{}')};
-function save(){localStorage.setItem('rcq3_prog',JSON.stringify(S.progress))}
-function PHASE_TOTAL(){let k={};for(let p of DATA.phases)k[p.id]=p.q.length;return k}
-const P_TOTAL=PHASE_TOTAL();
-function isComplete(pid){let p=S.progress[pid];return p?p.score>=P_TOTAL[pid]:false}
+  progress:JSON.parse(localStorage.getItem('rcq4_prog')||'{}')};
+function save(){localStorage.setItem('rcq4_prog',JSON.stringify(S.progress))}
+function P_TOTAL(){let k={};for(let p of DATA.phases)k[p.id]=p.q.length;return k}
+const TOTALS=P_TOTAL();
+
+// --- New: 70% unlock threshold ---
+function pctNeeded(total){return Math.ceil(total*0.7)}
+function isComplete(pid){let p=S.progress[pid];let need=pctNeeded(TOTALS[pid]);return p?p.score>=need:false}
 function isLocked(pid){
   let o=['rec','subj','obj','subobj','oblq','gen','rest','prod'];
   let i=o.indexOf(pid);if(i===0)return false;
-  let prev=S.progress[o[i-1]];return !prev||prev.score<P_TOTAL[o[i-1]];
+  let prev=S.progress[o[i-1]]||{};let need=pctNeeded(TOTALS[o[i-1]]);
+  return (prev.score||0)<need;
 }
 
 function render(){document.getElementById('backBtn').style.display=S.active?'block':'none';S.active?renderPhase():renderHome()}
 
+// ==================== HOME ====================
 function renderHome(){
   let app=document.getElementById('app'),tq=0,td=0;
   for(let p of DATA.phases){tq+=p.q.length;let b=S.progress[p.id]||{};td+=b.score||0}
@@ -222,20 +242,62 @@ function renderHome(){
     <p style="max-width:600px;margin:0 auto;font-size:15px">Relative Clause Master — 8个阶段，循序渐进。适合中国英语学习者的定语从句训练系统。</p>
     <div class="mastery"><span>${td}/${tq} 答对</span><span>${pct}%</span></div>
   </div></div><div class="section light"><div class="inner"><h2 style="color:var(--near)">学习阶段</h2>
-    <p>${DATA.phases.length}个阶段 · ${tq}道题 · 完成上一阶段解锁下一阶段</p><div class="phase-grid">`;
+    <p>${DATA.phases.length}个阶段 · ${tq}道题 · 每阶段正确回答70%+即可解锁下一阶段</p><div class="phase-grid">`;
   for(let i=0;i<DATA.phases.length;i++){
-    let p=DATA.phases[i],locked=isLocked(p.id),done=isComplete(p.id),pb=S.progress[p.id]||{},n=pb.score||0;
+    let p=DATA.phases[i],locked=isLocked(p.id),done=isComplete(p.id),pb=S.progress[p.id]||{},n=pb.score||0,need=pctNeeded(TOTALS[p.id]);
     let s=done?'✓':locked?'🔒':'';
-    h+=`<div class="phase-card${locked?' locked':''}" onclick="${locked?'':`startPhase('${p.id}')`}">
-      <div class="status">${s}</div><div class="num">第${i+1}阶段</div><div class="name">${p.name}</div>
-      <div class="desc">${p.s} · ${p.q.length}题<br><span style="font-size:11px;color:var(--dim)">${n}/${p.q.length} 答对</span></div>
-      <div class="check">${done?'重做 →':locked?'已锁定':'开始 →'}</div>
-    </div>`;
+    h+=`<button class="phase-card${locked?' locked':''}" onclick="${locked?'':`startPhase('${p.id}')`}" ${locked?'disabled':''} tabindex="${locked?'-1':'0'}" aria-label="${p.name}，${p.s}，${n}/${p.q.length}答对${locked?'，已锁定':''}">
+      <span class="status">${s}</span><span class="num">第${i+1}阶段</span><span class="name">${p.name}</span>
+      <div class="desc">${p.s} · ${p.q.length}题<br><span style="font-size:11px;color:var(--dim)">${n}/${p.q.length} 答对 ${done?'✓ 已完成':'(需≥'+need+'题)'}</span></div>
+      <span class="check">${done?'重做 →':locked?'已锁定':'开始 →'}</span>
+    </button>`;
   }
-  h+=`</div><button class="reset" onclick="if(confirm('重置所有进度？')){S.progress={};save();render()}">重置进度</button></div></div>`;
+  h+=`</div><div class="tool-row">
+    <button class="tool-btn" onclick="if(confirm('重置所有进度？')){S.progress={};save();render()}">🔄 重置进度</button>
+    <button class="tool-btn" onclick="exportProgress()">⬇️ 备份进度</button>
+    <button class="tool-btn" onclick="importProgress()">⬆️ 恢复进度</button>
+  </div></div></div>`;
   app.innerHTML=h;
 }
 
+// ==================== EXPORT / IMPORT PROGRESS ====================
+function exportProgress(){
+  let data=JSON.stringify(S.progress,null,2);
+  let blob=new Blob([data],{type:'application/json'});
+  let url=URL.createObjectURL(blob);
+  let a=document.createElement('a');
+  a.href=url;a.download='rcq4_backup.json';
+  document.body.appendChild(a);a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  let d=new Date();let ts=d.toLocaleDateString('zh-CN')+' '+d.toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
+  S.progress._exported=ts;save();
+  announce('✅ 进度已下载为 backup 文件');
+}
+function importProgress(){
+  let inp=document.createElement('input');
+  inp.type='file';inp.accept='.json';
+  inp.onchange=function(e){
+    let file=e.target.files[0];if(!file)return;
+    let reader=new FileReader();
+    reader.onload=function(ev){
+      try{
+        let data=JSON.parse(ev.target.result);
+        // Validate structure — just check it has phase keys
+        let valid=Object.keys(data).length>0;
+        for(let k in data) if(!TOTALS[k]&&k!=='_exported'){valid=false;break}
+        if(!valid){announce('⚠️ 文件格式不正确');return}
+        S.progress=data;
+        save();render();
+        announce('✅ 进度已恢复！共 '+Object.keys(S.progress).length+' 条记录');
+      }catch(e){announce('⚠️ 文件读取出错，请确认是备份文件');}
+    };
+    reader.readAsText(file);
+  };
+  inp.click();
+}
+
+// ==================== PHASE PLAY ====================
 function startPhase(pid){
   S.active=pid;S.idx=0;S.score=0;S.total=0;S.answered=false;S.sel=null;
   S.phaseQs=shuffle([...DATA.phases.find(p=>p.id===pid).q]);render();
@@ -262,7 +324,7 @@ function renderPhase(){
   </div></div></div></div>`;
   app.innerHTML=h;
 }
-function esc(s){return s.replace(/'/g,"\\'").replace(/"/g,'&quot;')}
+function esc(s){return(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;')}
 
 function pick(el){
   document.querySelectorAll('.opt').forEach(b=>{b.classList.remove('selected')});
@@ -270,54 +332,81 @@ function pick(el){
   document.getElementById('checkBtn').disabled=false;
 }
 
+// ==================== CHECK (multi-answer support) ====================
 function check(){
   if(S.answered)return;
-  let q=S.phaseQs[S.idx],correct=norm(S.sel)===norm(q.a);
+  let q=S.phaseQs[S.idx];
+  let correct=false;
+  // 'a' can be string or array of accepted answers
+  let answers=Array.isArray(q.a)?q.a:[q.a];
+  for(let ans of answers){if(norm(S.sel)===norm(ans)){correct=true;break}}
   S.answered=true;S.total++;if(correct)S.score++;
   document.querySelectorAll('.opt').forEach(b=>{
-    if(norm(b.dataset.v)===norm(q.a))b.classList.add('correct');
-    else if(b.classList.contains('selected')&&norm(b.dataset.v)!==norm(q.a))b.classList.add('wrong');
+    let match=false;
+    for(let ans of answers){if(norm(b.dataset.v)===norm(ans)){match=true;break}}
+    if(match)b.classList.add('correct');
+    else if(b.classList.contains('selected')&&!match)b.classList.add('wrong');
     b.disabled=true;
   });
   let expl=document.getElementById('expl');
   expl.className='explanation show '+(correct?'correct':'wrong');
+  // Show all accepted answers in feedback
+  let displayAns=answers.map(a=>'<b>'+esc(a)+'</b>').join(' 或 ');
   let t=q.t||'';
-  expl.innerHTML=(correct?'✓ 正确！':'✗ 正确答案是 <b>'+esc(q.a)+'</b>')+'<br><small style="opacity:.7">'+esc(t)+'</small>';
+  expl.innerHTML=(correct?'✓ 正确！':'✗ '+displayAns)+'<br><small style="opacity:.7">'+esc(t)+'</small>';
+  
+  // Screen-reader announcement
+  announce(correct?'正确！继续下一题':'答错了，答案显示在下方');
+  
   document.getElementById('checkBtn').style.display='none';
   document.getElementById('nextBtn').style.display='inline-flex';
 }
 
 function next(){
   if(!S.progress[S.active])S.progress[S.active]={score:0};
+  // Save total questions answered too so we know denominator
+  S.progress[S.active].total=(S.progress[S.active].total||0)+1;
   S.progress[S.active].score=Math.max(S.progress[S.active].score||0,S.score);
   save();S.idx++;render();
 }
 function norm(s){return(s||'').toLowerCase().replace(/[.,!?;:'"《》「」『』（）()]/g,'').replace(/\s+/g,' ').trim()}
 
+// ==================== COMPLETE ====================
 function renderComplete(app,p){
   let t=S.phaseQs.length,pct=Math.round(S.score/t*100),stars=pct>=90?3:pct>=70?2:pct>=50?1:0;
   let prev=S.progress[S.active]||{score:0};
-  if(S.score>prev.score){S.progress[S.active]={score:S.score};save()}
+  let need=pctNeeded(t);
+  if(S.score>prev.score){S.progress[S.active]={score:S.score,total:t};save()}
   let i=DATA.phases.indexOf(p),np=DATA.phases[i+1],all=DATA.phases.every(ph=>isComplete(ph.id));
+  let unlocked=S.score>=need;
   let h=`<div class="section dark"><div class="inner" style="text-align:center">
     <div style="font-size:64px;margin-bottom:16px">${stars>=3?'🏆':stars>=2?'🎉':stars>=1?'👍':'💪'}</div>
     <h1>${p.name} — 完成！</h1>
     <div class="stars">${'★'.repeat(Math.min(stars,3))+'☆'.repeat(Math.max(0,3-stars))}</div>
-    <div class="stats">${S.score}/${t} 答对 (${pct}%)</div>`;
-  if(pct<50) h+=`<p style="color:rgba(255,255,255,.5)">再练一次，目标是70%以上</p>`;
-  else if(pct<70) h+=`<p style="color:rgba(255,255,255,.5)">不错！再练一次达到70%以上再进入下一阶段</p>`;
-  else h+=`<p style="color:rgba(255,255,255,.5)">很好！准备进入下一阶段了吗？</p>`;
+    <div class="stats" style="font-size:17px;margin:12px 0">${S.score}/${t} 答对 (${pct}%)</div>`;
+  if(unlocked&&pct<70) h+=`<p style="color:rgba(255,255,255,.5)">不错！下一阶段已解锁，但可以再练一次达到70%+</p>`;
+  else if(!unlocked) h+=`<p style="color:rgba(255,255,255,.5)">需要≥${need}/${t}题正确（${Math.ceil(need/t*100)}%）才能解锁下一阶段，再练一次！</p>`;
+  else if(unlocked&&pct<90) h+=`<p style="color:rgba(255,255,255,.5)">很好！准备进入下一阶段了吗？</p>`;
+  else h+=`<p style="color:rgba(255,255,255,.5)">太棒了！完美通关！</p>`;
   h+=`<div class="btn-row" style="margin-top:24px">
     <button class="btn btn-outline" onclick="showHome()">← 全部阶段</button>
     <button class="btn btn-primary" onclick="startPhase('${p.id}')">↻ 重做</button>`;
   if(np&&!isLocked(np.id)) h+=`<button class="btn btn-primary" style="background:var(--green)" onclick="startPhase('${np.id}')">${np.name} →</button>`;
-  else if(np&&isLocked(np.id)) h+=`<button class="btn btn-primary" disabled style="opacity:.4">🔒 ${np.name}</button>`;
-  if(all) h+=`<p style="margin-top:24px;color:var(--green);font-size:17px;font-weight:600">全部8个阶段完成！🎉</p>`;
+  else if(np&&isLocked(np.id)) h+=`<button class="btn btn-primary" disabled style="opacity:.4">🔒 ${np.name} (需≥${pctNeeded(TOTALS[np.id])}题)</button>`;
+  if(all) h+=`<p style="margin-top:24px;color:var(--green);font-size:17px;font-weight:600">🎉 全部8个阶段完成！你已经掌握了定语从句！</p>`;
   h+=`</div></div></div>`;
   app.innerHTML=h;
 }
 
 function showHome(){S.active=null;render()}
+
+// ==================== SCREEN-READER ANNOUNCE ====================
+function announce(msg){
+  let el=document.getElementById('announce');
+  if(el){el.textContent='';setTimeout(()=>{el.textContent=msg},50)}
+}
+
+// ==================== INIT ====================
 render();
 </script>
 </body>

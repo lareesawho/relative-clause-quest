@@ -153,6 +153,14 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 .wrong-item .w-badge.many{background:var(--red);color:#fff}
 @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeIn .3s ease-out}
+@keyframes celebrate{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+@keyframes sparkle{0%{opacity:0;transform:translateY(0) scale(0)}50%{opacity:1;transform:translateY(-20px) scale(1.2)}100%{opacity:0;transform:translateY(-40px) scale(0)}}
+@keyframes unlockGlow{0%{box-shadow:0 0 0 rgba(126,200,160,0)}50%{box-shadow:0 0 30px rgba(126,200,160,.6)}100%{box-shadow:0 0 0 rgba(126,200,160,0)}}
+.correct-pop{animation:celebrate .4s ease}
+.wrong-shake{animation:shake .5s ease}
+.unlock-glow{animation:unlockGlow 1.5s ease}
+.sparkle{position:absolute;pointer-events:none;font-size:24px;animation:sparkle .8s ease forwards}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 @media(max-width:480px){body{letter-spacing:-.2px}.section{padding:36px 14px 48px}.section.dark:first-of-type{padding:40px 14px 36px}nav .inner{padding:0 12px}nav a{font-size:12px;padding:10px 8px}h1{font-size:clamp(22px,7vw,30px);line-height:1.15}.q-card{padding:16px 14px}.q-prompt{font-size:15px;line-height:1.5}.q-prompt em,.q-prompt u{word-break:break-all}.opt{font-size:13px;padding:10px 12px;min-height:40px}.opt::after{font-size:12px}.btn{font-size:13px;padding:8px 14px;min-height:40px;min-width:40px}.phase-card{padding:16px 14px;min-height:90px}.phase-card .name{font-size:15px}.phase-card .desc,.phase-card .num{font-size:11px}.back-btn{left:2px;top:54px;font-size:22px;padding:4px 10px;min-width:40px;min-height:40px}.tool-btn{font-size:10px;padding:6px;min-height:40px;gap:2px}.mastery span{font-size:11px}.progress-txt{font-size:11px}.explanation{font-size:12px;padding:10px 14px}.stars{font-size:24px;letter-spacing:2px}.btn-row{gap:8px}.btn-row .btn{font-size:12px;padding:6px 12px}.phase-grid{gap:10px}.wrong-item{padding:12px 14px;gap:8px}.wrong-item .w-q{font-size:14px}}
 @media(max-width:380px){.section{padding:28px 10px 36px}h1{font-size:clamp(18px,6vw,24px)}.q-card{padding:12px 10px}.q-prompt{font-size:14px}.opt{font-size:12px;padding:8px 10px;min-height:36px}.phase-card{padding:12px 10px;min-height:80px}.phase-card .name{font-size:14px}.back-btn{font-size:20px;left:0;top:52px}.btn{font-size:12px;padding:6px 10px;min-height:36px;min-width:36px}.btn-row{gap:6px}.tool-row{gap:4px;margin-top:16px}.tool-btn{font-size:9px;padding:4px;min-height:36px}.phase-card .desc{font-size:10px}.phase-card .check{font-size:11px}.wrong-item{padding:10px 12px}.wrong-item .w-q{font-size:13px}}
@@ -273,6 +281,39 @@ const DATA = {title:'Gramlingo',phases:[
 {q:'合并：We visited a museum. It has ancient art.',a:['We visited a museum that has ancient art.','We visited a museum which has ancient art.'],o:['We visited a museum that has ancient art.','We visited a museum which has ancient art.','We visited a museum it has ancient art.','We visited that has ancient art a museum.']},
 {q:'调整语序："The package arrived today that I ordered." 从句要跟着先行词',a:'The package that I ordered arrived today.',o:['The package that I ordered arrived today.','The package arrived today that I ordered.','The package that arrived today I ordered.']},
 {q:'改正："This is the hotel where I recommended it to you." 推荐(recommend)的宾语是酒店',a:['This is the hotel that I recommended to you.','This is the hotel which I recommended to you.'],o:['This is the hotel that I recommended to you.','This is the hotel which I recommended to you.','This is the hotel where I recommended to you.','This is the hotel where I recommended it to you.']},
+]},
+{id:'prep_place',name:'In / On / At — 空间介词',s:'In, On, At · 空间',d:'in = 在里面, on = 在上面, at = 在具体地点 —— 三步判断法：位置/接触/具体点',q:[
+{q:'The cat is sleeping ___ the box.',a:'in',o:['in','on','at','by'],t:'在盒子里面（三维空间）→ in'},
+{q:'The book is ___ the table.',a:'on',o:['in','on','at','to'],t:'在桌子上面（表面接触）→ on'},
+{q:'I met her ___ the bus stop.',a:'at',o:['in','on','at','by'],t:'具体地点（公交站）→ at'},
+{q:'There is a spider ___ the ceiling.',a:'on',o:['in','on','at','over'],t:'天花板上（接触表面）→ on'},
+{q:'She is waiting ___ the door.',a:'at',o:['in','on','at','by'],t:'具体位置（门口）→ at'},
+{q:'The kids are playing ___ the garden.',a:'in',o:['in','on','at','by'],t:'在花园里（有边界区域）→ in'},
+]},
+{id:'prep_time',name:'In / On / At — 时间介词',s:'In, On, At · 时间',d:'at = 具体时间点, on = 某一天, in = 较长时段 —— 越长越宽泛',q:[
+{q:'The meeting starts ___ 3 PM.',a:'at',o:['in','on','at','by'],t:'具体时刻 → at'},
+{q:'I was born ___ July.',a:'in',o:['in','on','at','during'],t:'月份（较长时段）→ in'},
+{q:'She arrived ___ Monday morning.',a:'on',o:['in','on','at','by'],t:'具体某天 → on'},
+{q:'We go skiing ___ winter.',a:'in',o:['in','on','at','during'],t:'季节 → in'},
+{q:'The train leaves ___ noon.',a:'at',o:['in','on','at','by'],t:'noon/midnight → at'},
+{q:'Her birthday is ___ May 15th.',a:'on',o:['in','on','at','by'],t:'具体日期 → on'},
+{q:'I usually wake up ___ 7 o\'clock.',a:'at',o:['in','on','at','by'],t:'具体时刻 → at'},
+]},
+{id:'prep_mixed',name:'时间 + 空间 混练',s:'混合练习',d:'区分空间和时间用法 —— 先判断是地点还是时间',q:[
+{q:'She lives ___ New York.',a:'in',o:['in','on','at','to'],t:'城市名称 → in'},
+{q:'We will meet ___ Friday.',a:'on',o:['in','on','at','by'],t:'星期几 → on'},
+{q:'He is standing ___ the corner.',a:'at',o:['in','on','at','by'],t:'街角（具体位置）→ at'},
+{q:'The party is ___ the evening.',a:'in',o:['in','on','at','by'],t:'in the evening 固定搭配'},
+{q:'Put the flowers ___ the vase.',a:'in',o:['in','on','at','by'],t:'花瓶里面 → in'},
+{q:'See you ___ Christmas Day.',a:'on',o:['in','on','at','by'],t:'具体节日当天 → on'},
+]},
+{id:'prep_prod',name:'生产性练习',s:'改错与填空',d:'找出错误并改正 —— 最易错的是用on代替in，用in代替at',q:[
+{q:'改正：\"I was born in July 15th.\" 具体日期',a:'on',o:['on','in','at','-'],t:'具体日期用 on → on July 15th'},
+{q:'填空：\"Hang the painting ___ the wall.\"',a:'on',o:['in','on','at','by'],t:'墙壁表面 → on'},
+{q:'改正：\"She arrived at Monday.\" 星期几',a:'on',o:['on','in','at','-'],t:'星期几用 on → on Monday'},
+{q:'填空：\"We stayed ___ a hotel.\"',a:'at',o:['in','on','at','by'],t:'具体地点（酒店）→ at'},
+{q:'改正：\"The answer is in the bottom of the page.\" 页面底部',a:'at',o:['at','in','on','-'],t:'具体位置 → at the bottom'},
+{q:'填空：\"I\'ll be back ___ a few minutes.\"',a:'in',o:['in','on','at','by'],t:'in + 一段时间 = 在……之后'},
 ]},
 ]};
 
@@ -474,8 +515,8 @@ function check(){
   document.querySelectorAll('.opt').forEach(b=>{
     let match=false;
     for(let ans of answers){if(norm(b.dataset.v)===norm(ans)){match=true;break}}
-    if(match)b.classList.add('correct');
-    else if(b.classList.contains('selected')&&!match)b.classList.add('wrong');
+    if(match){b.classList.add('correct');b.classList.add('correct-pop')}
+    else if(b.classList.contains('selected')&&!match){b.classList.add('wrong');b.classList.add('wrong-shake')}
     b.disabled=true;
   });
   let expl=document.getElementById('expl');

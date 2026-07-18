@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-style="9">
+<html lang="zh-CN" data-style="gramlin">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -39,8 +39,11 @@
 /* ===== STYLE 17: Parchment Classic ===== */
 [data-style="17"]{--bg:#faf3e0;--sect:#fdf8ef;--black:#2d1a08;--near:#2d1a08;--text:#4a3728;--dim:#6b4e30;--blue:#8b6914;--blueh:#6b5010;--blued:#b08930;--green:#2e7d32;--red:#b45030;--radius:8px;--fp:Georgia,serif;--fm:ui-monospace,monospace;--body-bg:#faf3e0;--nav-bg:rgba(45,26,8,.92);--nav-text:#faf3e0;--card-shadow:0 2px 12px rgba(100,70,30,.08);--qcard-shadow:0 2px 12px rgba(100,70,30,.06);--dark-card-bg:rgba(255,255,255,.08);--dark-opt-border:rgba(255,255,255,.1);--dark-opt-sel:rgba(139,105,20,.15);--dark-ex-correct:rgba(46,125,50,.15);--dark-ex-wrong:rgba(180,80,48,.15);--dark-txt-dim:rgba(255,255,255,.4);--wr-item-hover:rgba(139,105,20,.06);--opt-bg:#fffef8;--opt-border:1px solid #d4c4a0;--opt-first-bg:rgba(139,105,20,.06);--opt-first-border:#8b6914;--wr-bg:#fdf8ef}
 
-/* ===== BOLD HEADINGS for styles 9, 11, 14 ===== */
-[data-style="9"] h1,[data-style="9"] h2,[data-style="9"] .phase-card .name,[data-style="9"] .phase-label,[data-style="11"] h1,[data-style="11"] h2,[data-style="11"] .phase-card .name,[data-style="11"] .phase-label,[data-style="14"] h1,[data-style="14"] h2,[data-style="14"] .phase-card .name,[data-style="14"] .phase-label{font-weight:700!important}
+/* ===== STYLE: Gramlin (default) ===== */
+[data-style="gramlin"]{--bg:#f0faf5;--sect:#e8f5e9;--black:#2d4a3e;--near:#2d4a3e;--text:#3d5a4e;--dim:#7a9a8a;--blue:#7ec8a0;--blueh:#5cb878;--blued:#a0dcc0;--green:#5cb878;--red:#e8828a;--radius:18px;--fp:system-ui,-apple-system,sans-serif;--fm:ui-monospace,monospace;--body-bg:#f0faf5;--nav-bg:rgba(45,74,62,.92);--nav-text:#d4f0e0;--card-shadow:0 4px 20px rgba(100,180,140,.12);--qcard-shadow:0 4px 24px rgba(100,180,140,.1);--dark-card-bg:rgba(255,255,255,.1);--dark-opt-border:rgba(255,255,255,.12);--dark-opt-sel:rgba(126,200,160,.15);--dark-ex-correct:rgba(92,184,120,.15);--dark-ex-wrong:rgba(232,130,138,.15);--dark-txt-dim:rgba(255,255,255,.4);--wr-item-hover:rgba(126,200,160,.08);--opt-bg:#fff;--opt-border:2px solid #c8e8d4;--opt-first-bg:rgba(126,200,160,.1);--opt-first-border:#7ec8a0;--wr-bg:#fff}
+
+/* ===== BOLD HEADINGS for styles 9, 11, 14, gramlin ===== */
+[data-style="9"] h1,[data-style="9"] h2,[data-style="9"] .phase-card .name,[data-style="9"] .phase-label,[data-style="gramlin"] h1,[data-style="gramlin"] h2,[data-style="gramlin"] .phase-card .name,[data-style="gramlin"] .phase-label,[data-style="11"] h1,[data-style="11"] h2,[data-style="11"] .phase-card .name,[data-style="11"] .phase-label,[data-style="14"] h1,[data-style="14"] h2,[data-style="14"] .phase-card .name,[data-style="14"] .phase-label{font-weight:700!important}
 
 /* ===== GLOBAL ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -159,7 +162,8 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
     <a href="#" class="logo" onclick="showHome();return false">◈</a>
     <div style="display:flex;align-items:center;gap:12px">
       <select class="style-select" id="styleSwitcher" onchange="setStyle(this.value)" aria-label="切换主题">
-        <option value="9" selected>Mono Noir</option>
+        <option value="gramlin" selected>🧌 Gramlin</option>
+        <option value="9">Mono Noir</option>
         <option value="2">Warm Terra</option>
         <option value="5">Ghibli Forest</option>
         <option value="7">Brutalist Paper</option>
@@ -188,7 +192,7 @@ function setStyle(v){
   localStorage.setItem('rcq4_style',v);
 }
 (function(){
-  let saved = localStorage.getItem('rcq4_style')||'9';
+  let saved = localStorage.getItem('rcq4_style')||'gramlin';
   document.getElementById('styleSwitcher').value = saved;
   document.documentElement.setAttribute('data-style',saved);
 })();

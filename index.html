@@ -10,7 +10,6 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--fp);color:var(--near);background:var(--bg);line-height:1.47;letter-spacing:-.374px;min-height:100dvh;display:flex;flex-direction:column;align-items:center;-webkit-font-smoothing:antialiased}
-/* nav touch targets ≥44px */
 nav{position:sticky;top:0;z-index:100;width:100%;height:48px;background:rgba(0,0,0,.85);backdrop-filter:saturate(180%)blur(20px);-webkit-backdrop-filter:saturate(180%)blur(20px);display:flex;align-items:center;justify-content:center}
 nav .inner{width:100%;max-width:calc(980px + env(safe-area-inset-left) + env(safe-area-inset-right));display:flex;align-items:center;justify-content:space-between;padding:0 22px;padding-left:calc(22px + env(safe-area-inset-left));padding-right:calc(22px + env(safe-area-inset-right))}
 nav a{color:#fff;text-decoration:none;font-size:13px;font-weight:400;transition:.2s;padding:10px 12px;display:inline-block;min-height:44px;line-height:24px}
@@ -26,7 +25,6 @@ h1{font-family:var(--fp);font-size:clamp(28px,5vw,56px);font-weight:600;line-hei
 h2{font-size:clamp(22px,3.5vw,40px);font-weight:600;line-height:1.1;letter-spacing:normal;margin-bottom:4px}
 p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:var(--text)}
 .dark p{color:rgba(255,255,255,.8)}
-/* phase cards: keyboard-accessible buttons */
 .phase-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:40px}
 .phase-card{background:var(--bg);border-radius:var(--radius);padding:24px;cursor:pointer;transition:all .2s;border:none;text-align:left;position:relative;overflow:hidden;display:block;width:100%;font-family:var(--fp);font-size:inherit;color:inherit;min-height:120px}
 .dark .phase-card{background:rgba(255,255,255,.08);color:#fff}
@@ -43,7 +41,6 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 .dark .phase-card .check{color:var(--blued)}
 .phase-card.locked{opacity:.4;pointer-events:none;cursor:default}
 .phase-card .status{position:absolute;top:12px;right:16px;font-size:14px}
-/* question card */
 .q-card{background:var(--bg);border-radius:12px;padding:32px 28px;max-width:680px;margin:0 auto}
 .dark .q-card{background:rgba(255,255,255,.1)}
 .light .q-card,.white .q-card{box-shadow:0 4px 30px rgba(0,0,0,.08)}
@@ -62,7 +59,6 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 .opt:disabled{cursor:default}
 .opt.correct::after{content:' ✓';font-weight:700}
 .opt.wrong::after{content:' ✗';font-weight:700}
-/* button base */
 .btn{display:inline-flex;align-items:center;justify-content:center;padding:8px 16px;border-radius:var(--pill);font-size:14px;font-weight:400;border:none;cursor:pointer;transition:all .2s;min-height:44px;min-width:44px;font-family:var(--fp);text-decoration:none}
 .btn:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 .btn-primary{background:var(--blue);color:#fff}
@@ -73,7 +69,6 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 .dark .btn-outline{color:var(--blued);border-color:var(--blued)}
 .dark .btn-outline:hover{background:var(--blued);color:var(--black)}
 .btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
-/* progress */
 .progress-wrap{display:flex;align-items:center;gap:12px;margin-bottom:12px}
 .progress-bar{flex:1;height:4px;background:var(--sect);border-radius:2px;overflow:hidden}
 .dark .progress-bar{background:rgba(255,255,255,.15)}
@@ -87,28 +82,34 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 .explanation.wrong{background:rgba(255,59,48,.1);border-left:3px solid var(--red)}
 .dark .explanation.correct{background:rgba(52,199,89,.15)}
 .dark .explanation.wrong{background:rgba(255,59,48,.15)}
-/* complete */
 .stars{font-size:32px;margin:8px 0;letter-spacing:4px}
 .star-filled{color:var(--blue)}
 .star-empty{color:var(--sect)}
 .dark .star-empty{color:rgba(255,255,255,.15)}
-/* back btn */
 .back-btn{position:fixed;top:60px;left:16px;z-index:99;background:transparent;border:none;color:var(--blue);font-size:28px;cursor:pointer;padding:8px 12px;display:none;line-height:1;min-width:44px;min-height:44px;text-align:center}
 .back-btn:focus-visible{outline:3px solid var(--blue);outline-offset:1px}
 .dark .back-btn{color:var(--blued)}
-/* mastery */
 .mastery{display:flex;justify-content:center;gap:8px;margin:16px 0;flex-wrap:wrap}
 .mastery span{align-items:center;gap:4px;font-size:12px;color:var(--dim);font-family:var(--fm)}
 .dark .mastery span{color:rgba(255,255,255,.4)}
-/* reset + export row */
 .tool-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:24px}
 .tool-btn{font-size:11px;color:var(--dim);text-decoration:underline;cursor:pointer;background:none;border:none;font-family:var(--fp);padding:6px 8px;min-height:44px;min-width:44px;display:inline-flex;align-items:center;gap:4px}
 .tool-btn:hover{opacity:1;color:var(--near)}
 .dark .tool-btn{color:rgba(255,255,255,.4)}
 .dark .tool-btn:hover{color:#fff}
+/* 错题集 */
+.wrong-item{background:var(--bg);border-radius:var(--radius);padding:16px 20px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;flex-wrap:wrap}
+.light .wrong-item{box-shadow:0 1px 8px rgba(0,0,0,.06)}
+.dark .wrong-item{background:rgba(255,255,255,.08);color:#fff}
+.wrong-item:hover{background:rgba(0,113,227,.04)}
+.wrong-item .w-info{flex:1;min-width:0}
+.wrong-item .w-q {font-size:15px;font-weight:500;line-height:1.4;word-break:break-all}
+.wrong-item .w-meta{font-size:11px;color:var(--dim);margin-top:2px}
+.wrong-item .w-answer{font-size:13px;color:var(--green);font-weight:600}
+.wrong-item .w-badge{background:var(--red);color:#fff;border-radius:12px;padding:2px 10px;font-size:11px;font-weight:600;white-space:nowrap}
+.wrong-item .w-badge.one{background:rgba(255,59,48,.2);color:var(--red)} .wrong-item .w-badge.many{background:var(--red);color:#fff}
 @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeIn .3s ease-out}
-/* live-region screenreader-only */
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 @media(max-width:480px){
   body{letter-spacing:-.2px}
@@ -135,6 +136,8 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
   .btn-row{gap:8px}
   .btn-row .btn{font-size:12px;padding:6px 12px}
   .phase-grid{gap:10px}
+  .wrong-item{padding:12px 14px;gap:8px}
+  .wrong-item .w-q{font-size:14px}
 }
 @media(max-width:380px){
   .section{padding:28px 10px 36px}
@@ -151,6 +154,8 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
   .tool-btn{font-size:9px;padding:4px;min-height:36px}
   .phase-card .desc{font-size:10px}
   .phase-card .check{font-size:11px}
+  .wrong-item{padding:10px 12px}
+  .wrong-item .w-q{font-size:13px}
 }
 @media(max-width:600px){
   .section{padding:48px 16px 64px;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
@@ -175,13 +180,10 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 
 <div id="app"></div>
 
-<!-- Live region for screen-reader announcements -->
 <div id="announce" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
 
 <script>
 // ==================== CURRICULUM DATA ====================
-// Multi-answer support: 'a' can be string or array of accepted answers.
-// When array, norm(s) is matched against each element.
 const DATA = {title:'定语从句大师',phases:[
 {id:'rec',name:'识别定语从句',s:'你能找出定语从句吗？',d:'在句子中找出定语从句的部分',q:[
 {q:'下面哪个部分是定语从句？<br><em>The woman <u>who called me</u> is my manager.</em>',a:'who called me',o:['The woman','who called me','is my manager','my manager']},
@@ -262,7 +264,6 @@ function save(){localStorage.setItem('rcq4_prog',JSON.stringify(S.progress))}
 function P_TOTAL(){let k={};for(let p of DATA.phases)k[p.id]=p.q.length;return k}
 const TOTALS=P_TOTAL();
 
-// --- New: 70% unlock threshold ---
 function pctNeeded(total){return Math.ceil(total*0.7)}
 function isComplete(pid){let p=S.progress[pid];let need=pctNeeded(TOTALS[pid]);return p?p.score>=need:false}
 function isLocked(pid){
@@ -279,6 +280,7 @@ function renderHome(){
   let app=document.getElementById('app'),tq=0,td=0;
   for(let p of DATA.phases){tq+=p.q.length;let b=S.progress[p.id]||{};td+=b.score||0}
   let pct=tq?Math.round(td/tq*100):0;
+  let wk = loadWrong(); let wkCount = Object.keys(wk).length;
   let h=`<div class="section dark"><div class="inner" style="text-align:center">
     <h1>定语从句<span style="color:var(--blue)">.</span></h1>
     <p style="max-width:600px;margin:0 auto;font-size:15px">Relative Clause Master — 8个阶段，循序渐进。适合中国英语学习者的定语从句训练系统。</p>
@@ -294,10 +296,12 @@ function renderHome(){
       <span class="check">${done?'重做 →':locked?'已锁定':'开始 →'}</span>
     </button>`;
   }
+  let wkBtn = wkCount ? `<button class="tool-btn" onclick="showWrongBank()" style="color:var(--red);font-weight:600">📋 错题集 (${wkCount})</button>` : '';
   h+=`</div><div class="tool-row">
     <button class="tool-btn" onclick="if(confirm('重置所有进度？')){S.progress={};save();render()}">🔄 重置进度</button>
     <button class="tool-btn" onclick="exportProgress()">⬇️ 备份进度</button>
     <button class="tool-btn" onclick="importProgress()">⬆️ 恢复进度</button>
+    ${wkBtn}
   </div></div></div>`;
   app.innerHTML=h;
 }
@@ -325,7 +329,6 @@ function importProgress(){
     reader.onload=function(ev){
       try{
         let data=JSON.parse(ev.target.result);
-        // Validate structure — just check it has phase keys
         let valid=Object.keys(data).length>0;
         for(let k in data) if(!TOTALS[k]&&k!=='_exported'){valid=false;break}
         if(!valid){announce('⚠️ 文件格式不正确');return}
@@ -339,6 +342,84 @@ function importProgress(){
   inp.click();
 }
 
+// ==================== WRONG-BOOK (错题集) ====================
+function loadWrong(){try{return JSON.parse(localStorage.getItem('rcq4_wrong')||'{}')}catch(e){return{}}}
+function saveWrong(d){localStorage.setItem('rcq4_wrong',JSON.stringify(d))}
+function qKey(q){return q._key||(q._key=S.active+':'+btoa(unescape(encodeURIComponent(q.q||''))).slice(0,24))}
+
+function showWrongBank(){
+  S.active=null;
+  let wk = loadWrong();
+  let items = Object.values(wk);
+  if(!items.length){ alert('还没有错题，继续练习吧！'); renderHome(); return; }
+  items.sort((a,b)=>b.lastWrong-a.lastWrong);
+  document.getElementById('backBtn').style.display='none';
+  let app=document.getElementById('app');
+  let h=`<div class="section dark"><div class="inner" style="text-align:center">
+    <h1>错题集<span style="color:var(--red)">.</span></h1>
+    <p style="max-width:600px;margin:0 auto;font-size:15px">${items.length} 道错题 — 按最近错误时间排列</p>
+  </div></div><div class="section light"><div class="inner" style="max-width:680px">
+    <div style="margin-bottom:16px">`;
+  for(let it of items){
+    let cls = it.attempts>=3?'w-badge many':'w-badge one';
+    let phaseLabel = it.phaseName || it.phaseId;
+    let correctA = Array.isArray(it.correctAnswer) ? it.correctAnswer.join(' / ') : it.correctAnswer;
+    h+=`<div class="wrong-item fade-in" onclick="retakeOne('${it.key}')" tabindex="0" role="button" aria-label="重做此题">
+      <div class="w-info">
+        <div class="w-q">${it.prompt}</div>
+        <div class="w-meta">${phaseLabel} · 正确答案：<span class="w-answer">${esc(correctA)}</span></div>
+      </div>
+      <span class="${cls}">×${it.attempts}</span>
+    </div>`;
+  }
+  h+=`</div>
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="retakeAll()">🔁 重做全部错题</button>
+      <button class="btn btn-outline" onclick="if(confirm('清空所有错题记录？')){localStorage.removeItem('rcq4_wrong');renderHome();announce('✅ 错题集已清空')}" style="border-color:var(--red);color:var(--red)">🗑 清空错题集</button>
+      <button class="btn btn-primary" onclick="renderHome()">← 返回首页</button>
+    </div>
+  </div></div>`;
+  app.innerHTML=h;
+}
+
+function retakeOne(key){
+  let wk = loadWrong();
+  let it = wk[key];
+  if(!it) return;
+  // Build a queue from the wrong question
+  let phase = DATA.phases.find(p=>p.id===it.phaseId);
+  if(!phase){ alert('找不到对应的学习阶段'); return; }
+  // Re-find the original question object by matching prompt
+  let match = phase.q.find(q=>q.q===it.prompt);
+  if(!match){ alert('找不到原始题目'); return; }
+  // Start a phase with just this question + the rest of that phase's questions
+  S.active=it.phaseId; S.idx=0; S.score=0; S.total=0; S.answered=false; S.sel=null;
+  // Shuffle all questions from this phase, but put the wrong one first
+  let rest = shuffle([...phase.q.filter(q=>q.q!==it.prompt)]);
+  S.phaseQs = [match, ...rest];
+  // Remove from wrong-book if they get it right later (handled in check())
+  render();
+}
+
+function retakeAll(){
+  let wk = loadWrong();
+  let items = Object.values(wk);
+  if(!items.length){ alert('没有错题'); return; }
+  // Collect original question objects
+  let questions = [];
+  for(let it of items){
+    let phase = DATA.phases.find(p=>p.id===it.phaseId);
+    if(!phase) continue;
+    let match = phase.q.find(q=>q.q===it.prompt);
+    if(match){ questions.push(match); }
+  }
+  if(!questions.length){ alert('找不到错题对应的原始题目'); return; }
+  // Start a pseudo-phase: "错题复习"
+  S.active='_wrong'; S.idx=0; S.score=0; S.total=0; S.answered=false; S.sel=null;
+  S.phaseQs=shuffle(questions);
+  render();
+}
+
 // ==================== PHASE PLAY ====================
 function startPhase(pid){
   S.active=pid;S.idx=0;S.score=0;S.total=0;S.answered=false;S.sel=null;
@@ -347,9 +428,11 @@ function startPhase(pid){
 function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 
 function renderPhase(){
-  let app=document.getElementById('app'),p=DATA.phases.find(p=>p.id===S.active);
+  let app=document.getElementById('app');
+  let isWrongMode = S.active==='_wrong';
+  let p = isWrongMode ? {id:'_wrong',name:'错题复习',s:'专攻薄弱环节',d:'这些是你之前答错的题目，集中突破。'} : DATA.phases.find(p=>p.id===S.active);
   if(!p){showHome();return}
-  if(S.idx>=S.phaseQs.length){renderComplete(app,p);return}
+  if(S.idx>=S.phaseQs.length){renderComplete(app,p,isWrongMode);return}
   let q=S.phaseQs[S.idx];S.answered=false;S.sel=null;
   let t=S.phaseQs.length,pct=Math.round(S.idx/t*100);
   let h=`<div class="section light fade-in"><div class="inner" style="max-width:680px">
@@ -374,15 +457,39 @@ function pick(el){
   document.getElementById('checkBtn').disabled=false;
 }
 
-// ==================== CHECK (multi-answer support) ====================
+// ==================== CHECK (multi-answer + wrong-book recording) ====================
 function check(){
   if(S.answered)return;
   let q=S.phaseQs[S.idx];
   let correct=false;
-  // 'a' can be string or array of accepted answers
   let answers=Array.isArray(q.a)?q.a:[q.a];
   for(let ans of answers){if(norm(S.sel)===norm(ans)){correct=true;break}}
   S.answered=true;S.total++;if(correct)S.score++;
+
+  // 错题集: if wrong, record it. If right AND it was in wrong-book, remove it.
+  let k = qKey(q);
+  let wk = loadWrong();
+  if(!correct){
+    let an = Array.isArray(q.a) ? q.a[0] : q.a;
+    let phase = DATA.phases.find(ph=>ph.id===S.active);
+    if(wk[k]){
+      wk[k].attempts++;
+      wk[k].lastWrong = Date.now();
+      wk[k].userAnswer = S.sel;
+    } else {
+      wk[k] = {
+        key: k, phaseId: S.active, phaseName: (phase||{}).name||S.active,
+        prompt: q.q, correctAnswer: an, userAnswer: S.sel,
+        attempts: 1, lastWrong: Date.now()
+      };
+    }
+    saveWrong(wk);
+  } else if(wk[k]){
+    // Answered correctly! Remove from wrong-book
+    delete wk[k];
+    saveWrong(wk);
+  }
+
   document.querySelectorAll('.opt').forEach(b=>{
     let match=false;
     for(let ans of answers){if(norm(b.dataset.v)===norm(ans)){match=true;break}}
@@ -392,30 +499,42 @@ function check(){
   });
   let expl=document.getElementById('expl');
   expl.className='explanation show '+(correct?'correct':'wrong');
-  // Show all accepted answers in feedback
   let displayAns=answers.map(a=>'<b>'+esc(a)+'</b>').join(' 或 ');
   let t=q.t||'';
   expl.innerHTML=(correct?'✓ 正确！':'✗ '+displayAns)+'<br><small style="opacity:.7">'+esc(t)+'</small>';
-  
-  // Screen-reader announcement
   announce(correct?'正确！继续下一题':'答错了，答案显示在下方');
-  
   document.getElementById('checkBtn').style.display='none';
   document.getElementById('nextBtn').style.display='inline-flex';
 }
 
 function next(){
-  if(!S.progress[S.active])S.progress[S.active]={score:0};
-  // Save total questions answered too so we know denominator
-  S.progress[S.active].total=(S.progress[S.active].total||0)+1;
-  S.progress[S.active].score=Math.max(S.progress[S.active].score||0,S.score);
-  save();S.idx++;render();
+  let isWrongMode = S.active==='_wrong';
+  if(!isWrongMode){
+    if(!S.progress[S.active])S.progress[S.active]={score:0};
+    S.progress[S.active].total=(S.progress[S.active].total||0)+1;
+    S.progress[S.active].score=Math.max(S.progress[S.active].score||0,S.score);
+    save();
+  }
+  S.idx++;render();
 }
 function norm(s){return(s||'').toLowerCase().replace(/[.,!?;:'"《》「」『』（）()]/g,'').replace(/\s+/g,' ').trim()}
 
 // ==================== COMPLETE ====================
-function renderComplete(app,p){
+function renderComplete(app,p,isWrongMode){
   let t=S.phaseQs.length,pct=Math.round(S.score/t*100),stars=pct>=90?3:pct>=70?2:pct>=50?1:0;
+  if(isWrongMode){
+    let h=`<div class="section dark"><div class="inner" style="text-align:center">
+      <div style="font-size:64px;margin-bottom:16px">${stars>=3?'🏆':stars>=2?'🎉':stars>=1?'👍':'💪'}</div>
+      <h1>错题复习 — 完成！</h1>
+      <div class="stars">${'★'.repeat(Math.min(stars,3))+'☆'.repeat(Math.max(0,3-stars))}</div>
+      <div class="stats" style="font-size:17px;margin:12px 0">${S.score}/${t} 答对 (${pct}%)</div>
+      <p style="color:rgba(255,255,255,.5)">${pct>=70?'大部分都掌握了！':'继续加油，回到错题集再练一次。'}</p>
+      <div class="btn-row" style="margin-top:24px">
+        <button class="btn btn-outline" onclick="showWrongBank()">← 返回错题集</button>
+        <button class="btn btn-primary" onclick="renderHome()">← 返回首页</button>
+      </div></div></div>`;
+    app.innerHTML=h; return;
+  }
   let prev=S.progress[S.active]||{score:0};
   let need=pctNeeded(t);
   if(S.score>prev.score){S.progress[S.active]={score:S.score,total:t};save()}
@@ -442,13 +561,11 @@ function renderComplete(app,p){
 
 function showHome(){S.active=null;render()}
 
-// ==================== SCREEN-READER ANNOUNCE ====================
 function announce(msg){
   let el=document.getElementById('announce');
   if(el){el.textContent='';setTimeout(()=>{el.textContent=msg},50)}
 }
 
-// ==================== INIT ====================
 render();
 </script>
 </body>

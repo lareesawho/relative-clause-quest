@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>定语从句大师 — Relative Clause Master</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>◈</text></svg>">
+<title>Gramlingo — Grammar Quest</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🧌</text></svg>">
 <style>
 /* ===== BASE DEFAULTS (Style 1 = Apple) ===== */
 :root{--bg:#ffffff;--sect:#f5f5f7;--black:#000000;--near:#1d1d1f;--text:rgba(0,0,0,.85);--dim:rgba(0,0,0,.55);--blue:#0071e3;--blueh:#0066cc;--blued:#2997ff;--green:#34c759;--red:#ff3b30;--radius:8px;--pill:980px;--fp:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;--fm:ui-monospace,Menlo,Monaco,Consolas,monospace;--nav-bg:rgba(0,0,0,.85);--nav-text:#fff;--nav-hover:rgba(255,255,255,.7);--body-bg:var(--bg);--card-shadow:0 2px 20px rgba(0,0,0,.06);--qcard-shadow:0 4px 30px rgba(0,0,0,.08);--dark-card-bg:rgba(255,255,255,.08);--dark-opt-border:rgba(255,255,255,.15);--dark-opt-sel:rgba(0,113,227,.15);--dark-ex-correct:rgba(52,199,89,.15);--dark-ex-wrong:rgba(255,59,48,.15);--dark-txt-dim:rgba(255,255,255,.4);--wr-item-hover:rgba(0,113,227,.04);--opt-bg:transparent;--opt-border:var(--sect);--opt-first-bg:rgba(0,113,227,.06);--opt-first-border:var(--blue);--wr-bg:var(--bg);--phase-hover:transform:translateY(-2px)}
@@ -159,7 +159,7 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 
 <nav>
   <div class="inner">
-    <a href="#" class="logo" onclick="showHome();return false">◈</a>
+    <a href="#" class="logo" onclick="showHome();return false">🧌</a>
     <div style="display:flex;align-items:center;gap:12px">
       <select class="style-select" id="styleSwitcher" onchange="setStyle(this.value)" aria-label="切换主题">
         <option value="gramlin" selected>🧌 Gramlin</option>
@@ -198,7 +198,7 @@ function setStyle(v){
 })();
 
 // ==================== CURRICULUM DATA ====================
-const DATA = {title:'定语从句大师',phases:[
+const DATA = {title:'Gramlingo',phases:[
 {id:'rec',name:'识别定语从句',s:'你能找出定语从句吗？',d:'在句子中找出定语从句的部分',q:[
 {q:'下面哪个部分是定语从句？<br><em>The woman <u>who called me</u> is my manager.</em>',a:'who called me',o:['The woman','who called me','is my manager','my manager']},
 {q:'下面哪个部分是定语从句？<br><em>I read the book <u>that you recommended</u>.</em>',a:'that you recommended',o:['I read','the book','that you recommended','the book that']},
@@ -296,8 +296,8 @@ function renderHome(){
   let pct=tq?Math.round(td/tq*100):0;
   let wk = loadWrong(); let wkCount = Object.keys(wk).length;
   let h=`<div class="section dark"><div class="inner" style="text-align:center">
-    <h1>定语从句<span style="color:var(--blue)">.</span></h1>
-    <p style="max-width:600px;margin:0 auto;font-size:15px">Relative Clause Master — 8个阶段，循序渐进。适合中国英语学习者的定语从句训练系统。</p>
+    <h1>Gramlingo<span style="color:var(--blue)">.</span></h1>
+    <p style="max-width:600px;margin:0 auto;font-size:15px">Grammar Quest — 8个阶段，循序渐进。适合中国英语学习者的语法训练系统。</p>
     <div class="mastery"><span>${td}/${tq} 答对</span><span>${pct}%</span></div>
   </div></div><div class="section light"><div class="inner"><h2 style="color:var(--near)">学习阶段</h2>
     <p>${DATA.phases.length}个阶段 · ${tq}道题 · 每阶段正确回答70%+即可解锁下一阶段</p><div class="phase-grid">`;

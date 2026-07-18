@@ -345,7 +345,7 @@ function importProgress(){
 // ==================== WRONG-BOOK (错题集) ====================
 function loadWrong(){try{return JSON.parse(localStorage.getItem('rcq4_wrong')||'{}')}catch(e){return{}}}
 function saveWrong(d){localStorage.setItem('rcq4_wrong',JSON.stringify(d))}
-function qKey(q){return q._key||(q._key=S.active+':'+btoa(unescape(encodeURIComponent(q.q||''))).slice(0,24))}
+function qKey(q){return q._key||(q._key=btoa((q.q||'')+'|'+(Array.isArray(q.a)?q.a.join(','):q.a||'')).slice(0,24))}
 
 function showWrongBank(){
   S.active=null;

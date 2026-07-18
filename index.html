@@ -42,6 +42,9 @@
 /* ===== STYLE: Gramlin (default) ===== */
 [data-style="gramlin"]{--bg:#f0faf5;--sect:#e8f5e9;--black:#2d4a3e;--near:#2d4a3e;--text:#3d5a4e;--dim:#7a9a8a;--blue:#7ec8a0;--blueh:#5cb878;--blued:#a0dcc0;--green:#5cb878;--red:#e8828a;--radius:18px;--fp:system-ui,-apple-system,sans-serif;--fm:ui-monospace,monospace;--body-bg:#f0faf5;--nav-bg:rgba(45,74,62,.92);--nav-text:#d4f0e0;--card-shadow:0 4px 20px rgba(100,180,140,.12);--qcard-shadow:0 4px 24px rgba(100,180,140,.1);--dark-card-bg:rgba(255,255,255,.1);--dark-opt-border:rgba(255,255,255,.12);--dark-opt-sel:rgba(126,200,160,.15);--dark-ex-correct:rgba(92,184,120,.15);--dark-ex-wrong:rgba(232,130,138,.15);--dark-txt-dim:rgba(255,255,255,.4);--wr-item-hover:rgba(126,200,160,.08);--opt-bg:#fff;--opt-border:2px solid #c8e8d4;--opt-first-bg:rgba(126,200,160,.1);--opt-first-border:#7ec8a0;--wr-bg:#fff}
 
+/* ===== STYLE: Sunset Gramlin (brand theme) ===== */
+[data-style="sunset"]{--bg:#fff5ee;--sect:#fff0e6;--black:#2d1b10;--near:#2d1b10;--text:#3d2e1e;--dim:#8a6a50;--blue:#ff8c42;--blueh:#e07030;--blued:#ffb088;--green:#4caf50;--red:#e07070;--radius:16px;--fp:system-ui,-apple-system,sans-serif;--fm:ui-monospace,monospace;--body-bg:#fff5ee;--nav-bg:rgba(45,27,16,.92);--nav-text:#fff0e0;--card-shadow:0 4px 20px rgba(200,120,80,.12);--qcard-shadow:0 4px 24px rgba(200,120,80,.1);--dark-card-bg:rgba(255,255,255,.1);--dark-opt-border:rgba(255,255,255,.12);--dark-opt-sel:rgba(255,140,66,.15);--dark-ex-correct:rgba(76,175,80,.15);--dark-ex-wrong:rgba(224,112,112,.15);--dark-txt-dim:rgba(255,255,255,.4);--wr-item-hover:rgba(255,140,66,.08);--opt-bg:#fff;--opt-border:2px solid #f0d8c0;--opt-first-bg:rgba(255,140,66,.1);--opt-first-border:#ff8c42;--wr-bg:#fff}
+
 /* ===== BOLD HEADINGS for styles 9, 11, 14, gramlin ===== */
 [data-style="9"] h1,[data-style="9"] h2,[data-style="9"] .phase-card .name,[data-style="9"] .phase-label,[data-style="gramlin"] h1,[data-style="gramlin"] h2,[data-style="gramlin"] .phase-card .name,[data-style="gramlin"] .phase-label,[data-style="11"] h1,[data-style="11"] h2,[data-style="11"] .phase-card .name,[data-style="11"] .phase-label,[data-style="14"] h1,[data-style="14"] h2,[data-style="14"] .phase-card .name,[data-style="14"] .phase-label{font-weight:700!important}
 
@@ -163,6 +166,7 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
     <div style="display:flex;align-items:center;gap:12px">
       <select class="style-select" id="styleSwitcher" onchange="setStyle(this.value)" aria-label="切换主题">
         <option value="gramlin" selected>🧌 Gramlin</option>
+        <option value="sunset">🌅 Sunset</option>
         <option value="9">Mono Noir</option>
         <option value="2">Warm Terra</option>
         <option value="5">Ghibli Forest</option>

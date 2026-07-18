@@ -1,21 +1,59 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-style="9">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>定语从句大师 — Relative Clause Master</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>◈</text></svg>">
 <style>
-:root{--bg:#ffffff;--sect:#f5f5f7;--black:#000000;--near:#1d1d1f;--text:rgba(0,0,0,.85);--dim:rgba(0,0,0,.55);--blue:#0071e3;--blueh:#0066cc;--blued:#2997ff;--green:#34c759;--red:#ff3b30;--radius:8px;--pill:980px;--fp:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;--fm:ui-monospace,Menlo,Monaco,Consolas,monospace}
+/* ===== BASE DEFAULTS (Style 1 = Apple) ===== */
+:root{--bg:#ffffff;--sect:#f5f5f7;--black:#000000;--near:#1d1d1f;--text:rgba(0,0,0,.85);--dim:rgba(0,0,0,.55);--blue:#0071e3;--blueh:#0066cc;--blued:#2997ff;--green:#34c759;--red:#ff3b30;--radius:8px;--pill:980px;--fp:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;--fm:ui-monospace,Menlo,Monaco,Consolas,monospace;--nav-bg:rgba(0,0,0,.85);--nav-text:#fff;--nav-hover:rgba(255,255,255,.7);--body-bg:var(--bg);--card-shadow:0 2px 20px rgba(0,0,0,.06);--qcard-shadow:0 4px 30px rgba(0,0,0,.08);--dark-card-bg:rgba(255,255,255,.08);--dark-opt-border:rgba(255,255,255,.15);--dark-opt-sel:rgba(0,113,227,.15);--dark-ex-correct:rgba(52,199,89,.15);--dark-ex-wrong:rgba(255,59,48,.15);--dark-txt-dim:rgba(255,255,255,.4);--wr-item-hover:rgba(0,113,227,.04);--opt-bg:transparent;--opt-border:var(--sect);--opt-first-bg:rgba(0,113,227,.06);--opt-first-border:var(--blue);--wr-bg:var(--bg);--phase-hover:transform:translateY(-2px)}
+
+/* ===== STYLE 2: Warm Terra ===== */
+[data-style="2"]{--bg:linear-gradient(135deg,#fefaf6 0%,#faf5ee 100%);--sect:#faf5ee;--black:#3d2e1e;--near:#2d1f10;--text:#3d2e1e;--dim:#8a7560;--blue:#c49a6c;--blueh:#b0895a;--blued:#d4ae80;--green:#2e7d32;--red:#d32f2f;--radius:16px;--fp:system-ui,-apple-system,sans-serif;--fm:ui-monospace,monospace;--body-bg:#fefaf6;--nav-bg:rgba(45,31,16,.92);--nav-text:#f5ead8;--card-shadow:0 2px 12px rgba(120,80,40,.06);--qcard-shadow:0 4px 20px rgba(120,80,40,.04);--dark-card-bg:rgba(255,255,255,.06);--dark-opt-border:rgba(255,255,255,.1);--dark-opt-sel:rgba(196,154,108,.15);--dark-ex-correct:rgba(46,125,50,.15);--dark-ex-wrong:rgba(211,47,47,.15);--dark-txt-dim:rgba(255,255,255,.4);--wr-item-hover:rgba(196,154,108,.06);--opt-bg:#fff;--opt-border:1.5px solid #e8d5c0;--opt-first-bg:rgba(196,154,108,.06);--opt-first-border:#c49a6c;--wr-bg:#fff;--opt-correct-bg:#e8f5e9;--opt-wrong-bg:transparent}
+
+/* ===== STYLE 5: Ghibli Forest ===== */
+[data-style="5"]{--bg:linear-gradient(180deg,#e8f0e3,#d4e6cd);--sect:#e8f0e3;--black:#1e3a0e;--near:#1e3a0e;--text:#2d4a22;--dim:#5a7a4a;--blue:#6b9b4a;--blueh:#5a8a3a;--blued:#8bbf6a;--green:#2e7d32;--red:#c62828;--radius:20px;--fp:Georgia,serif;--fm:ui-monospace,monospace;--body-bg:#e8f0e3;--nav-bg:rgba(30,58,14,.92);--nav-text:#d4e6cd;--card-shadow:0 4px 16px rgba(60,100,40,.1);--qcard-shadow:0 4px 16px rgba(60,100,40,.06);--dark-card-bg:rgba(255,255,255,.08);--dark-opt-border:rgba(255,255,255,.1);--dark-opt-sel:rgba(107,155,74,.15);--dark-ex-correct:rgba(46,125,50,.15);--dark-ex-wrong:rgba(198,40,40,.15);--dark-txt-dim:rgba(255,255,255,.4);--wr-item-hover:rgba(107,155,74,.06);--opt-bg:#fff;--opt-border:2px solid #c8e0b8;--opt-first-bg:#f0f7ea;--opt-first-border:#6b9b4a;--wr-bg:#fff}
+
+/* ===== STYLE 7: Brutalist Paper ===== */
+[data-style="7"]{--bg:#f5f0e8;--sect:#faf8f3;--black:#1a1a1a;--near:#1a1a1a;--text:#3d3028;--dim:#555;--blue:#ff6b35;--blueh:#e05a2a;--blued:#ff8a55;--green:#2e7d32;--red:#d32f2f;--radius:4px;--fp:Georgia,serif;--fm:'Courier New',Courier,monospace;--body-bg:#f5f0e8;--nav-bg:#1a1a1a;--nav-text:#f5f0e8;--card-shadow:6px 6px 0 #1a1a1a;--qcard-shadow:8px 8px 0 #1a1a1a;--dark-card-bg:rgba(255,255,255,.05);--dark-opt-border:rgba(255,255,255,.08);--dark-opt-sel:rgba(255,107,53,.15);--dark-ex-correct:rgba(46,125,50,.15);--dark-ex-wrong:rgba(211,47,47,.15);--dark-txt-dim:rgba(255,255,255,.35);--wr-item-hover:rgba(255,107,53,.06);--opt-bg:#fff;--opt-border:2px solid #2d2d2d;--opt-first-bg:#fff;--opt-first-border:3px solid #ff6b35;--wr-bg:#fff}
+
+/* ===== STYLE 8: Cyber Y2K ===== */
+[data-style="8"]{--bg:linear-gradient(135deg,#e8f0fe 0%,#dce4f8 50%,#f0e6ff 100%);--sect:#f0f4ff;--black:#1e3a5f;--near:#1e3a5f;--text:#1e3a5f;--dim:#5a7aaa;--blue:#4a90d9;--blueh:#3a7ac9;--blued:#6ab0f0;--green:#2e7d32;--red:#e74c3c;--radius:24px;--fp:system-ui,-apple-system,sans-serif;--fm:ui-monospace,monospace;--body-bg:#e8f0fe;--nav-bg:rgba(30,58,95,.92);--nav-text:#dce4f8;--card-shadow:0 8px 32px rgba(100,140,220,.15);--qcard-shadow:0 8px 32px rgba(100,140,220,.1);--dark-card-bg:rgba(255,255,255,.08);--dark-opt-border:rgba(255,255,255,.1);--dark-opt-sel:rgba(74,144,217,.15);--dark-ex-correct:rgba(46,125,50,.15);--dark-ex-wrong:rgba(231,76,60,.15);--dark-txt-dim:rgba(255,255,255,.4);--wr-item-hover:rgba(74,144,217,.06);--opt-bg:rgba(255,255,255,.7);--opt-border:2px solid #d8e0f8;--opt-first-bg:rgba(138,180,248,.08);--opt-first-border:#8ab4f8;--wr-bg:rgba(255,255,255,.8)}
+
+/* ===== STYLE 9: Mono Noir — DEFAULT ===== */
+[data-style="9"]{--bg:#ffffff;--sect:#ffffff;--black:#000000;--near:#000000;--text:#000000;--dim:#666;--blue:#000000;--blueh:#333;--blued:#555;--green:#2e7d32;--red:#d32f2f;--radius:0;--fp:system-ui,-apple-system,sans-serif;--fm:ui-monospace,monospace;--body-bg:#ffffff;--nav-bg:#000;--nav-text:#fff;--card-shadow:none;--qcard-shadow:none;--dark-card-bg:#fff;--dark-opt-border:#ddd;--dark-opt-sel:transparent;--dark-ex-correct:rgba(46,125,50,.05);--dark-ex-wrong:rgba(211,47,47,.05);--dark-txt-dim:#888;--wr-item-hover:rgba(0,0,0,.02);--opt-bg:#fff;--opt-border:1px solid #ddd;--opt-first-bg:#fff;--opt-first-border:2px solid #000;--wr-bg:#fff}
+
+/* ===== STYLE 10: Sakura Light ===== */
+[data-style="10"]{--bg:linear-gradient(180deg,#fff5f7 0%,#ffe8ec 100%);--sect:#fff5f7;--black:#2d0a15;--near:#2d0a15;--text:#4a1a2a;--dim:#8a5a6a;--blue:#d4849a;--blueh:#c0708a;--blued:#e8a0b8;--green:#2e7d32;--red:#c43a50;--radius:18px;--fp:Georgia,serif;--fm:ui-monospace,monospace;--body-bg:#fff5f7;--nav-bg:rgba(45,10,21,.92);--nav-text:#ffe8ec;--card-shadow:0 3px 16px rgba(200,100,130,.08);--qcard-shadow:0 3px 16px rgba(200,100,130,.06);--dark-card-bg:rgba(255,255,255,.08);--dark-opt-border:rgba(255,255,255,.1);--dark-opt-sel:rgba(212,132,154,.15);--dark-ex-correct:rgba(46,125,50,.15);--dark-ex-wrong:rgba(196,58,80,.15);--dark-txt-dim:rgba(255,255,255,.4);--wr-item-hover:rgba(212,132,154,.06);--opt-bg:#fff;--opt-border:2px solid #f4c2d0;--opt-first-bg:rgba(212,132,154,.06);--opt-first-border:#d4849a;--wr-bg:#fff}
+
+/* ===== STYLE 11: Midnight Ink (bold headings) ===== */
+[data-style="11"]{--bg:#050510;--sect:#080820;--black:#050510;--near:#d0d8ff;--text:#c8d0ff;--dim:#4060a0;--blue:#6080d0;--blueh:#80a0ff;--blued:#80a0ff;--green:#34c759;--red:#ff6b6b;--radius:12px;--fp:system-ui,-apple-system,sans-serif;--fm:ui-monospace,monospace;--body-bg:#050510;--nav-bg:#080820;--nav-text:#c8d0ff;--card-shadow:0 2px 20px rgba(0,0,0,.3);--qcard-shadow:0 4px 30px rgba(0,0,0,.3);--dark-card-bg:rgba(96,128,208,.05);--dark-opt-border:rgba(255,255,255,.06);--dark-opt-sel:rgba(96,128,208,.12);--dark-ex-correct:rgba(52,199,89,.08);--dark-ex-wrong:rgba(255,107,107,.08);--dark-txt-dim:rgba(200,208,255,.35);--wr-item-hover:rgba(96,128,208,.08);--opt-bg:#0a0a28;--opt-border:2px solid #1a2040;--opt-first-bg:rgba(96,128,208,.08);--opt-first-border:#6080d0;--wr-bg:#0a0a28}
+
+/* ===== STYLE 14: Concrete Minimal (bold headings) ===== */
+[data-style="14"]{--bg:#f9f9f9;--sect:#f9f9f9;--black:#1a1a1a;--near:#1a1a1a;--text:#2d2d2d;--dim:#888;--blue:#555;--blueh:#333;--blued:#777;--green:#2e7d32;--red:#d32f2f;--radius:0;--fp:system-ui,-apple-system,sans-serif;--fm:ui-monospace,monospace;--body-bg:#f9f9f9;--nav-bg:#1a1a1a;--nav-text:#f9f9f9;--card-shadow:none;--qcard-shadow:none;--dark-card-bg:#f9f9f9;--dark-opt-border:#e0e0e0;--dark-opt-sel:transparent;--dark-ex-correct:rgba(46,125,50,.05);--dark-ex-wrong:rgba(211,47,47,.05);--dark-txt-dim:#999;--wr-item-hover:rgba(0,0,0,.02);--opt-bg:#fff;--opt-border:1px solid #e0e0e0;--opt-first-bg:#fff;--opt-first-border:2px solid #1a1a1a;--wr-bg:#f9f9f9}
+
+/* ===== STYLE 15: Neon Tokyo ===== */
+[data-style="15"]{--bg:#0d001a;--sect:#120020;--black:#0d001a;--near:#ffc0e0;--text:#c080e0;--dim:#8040c0;--blue:#ff40a0;--blueh:#ff80c0;--blued:#ff80c0;--green:#00ff88;--red:#ff4080;--radius:6px;--fp:system-ui,-apple-system,sans-serif;--fm:ui-monospace,monospace;--body-bg:#0d001a;--nav-bg:#15002a;--nav-text:#ff80c0;--card-shadow:0 0 20px rgba(255,64,160,.2);--qcard-shadow:0 0 30px rgba(255,64,160,.1);--dark-card-bg:rgba(255,64,160,.05);--dark-opt-border:rgba(255,255,255,.06);--dark-opt-sel:rgba(255,64,160,.1);--dark-ex-correct:rgba(0,255,136,.08);--dark-ex-wrong:rgba(255,64,128,.08);--dark-txt-dim:rgba(255,128,192,.35);--wr-item-hover:rgba(255,64,160,.08);--opt-bg:#120020;--opt-border:1px solid #402060;--opt-first-bg:rgba(255,64,160,.1);--opt-first-border:#ff40a0;--wr-bg:#120020}
+
+/* ===== STYLE 17: Parchment Classic ===== */
+[data-style="17"]{--bg:#faf3e0;--sect:#fdf8ef;--black:#2d1a08;--near:#2d1a08;--text:#4a3728;--dim:#6b4e30;--blue:#8b6914;--blueh:#6b5010;--blued:#b08930;--green:#2e7d32;--red:#b45030;--radius:8px;--fp:Georgia,serif;--fm:ui-monospace,monospace;--body-bg:#faf3e0;--nav-bg:rgba(45,26,8,.92);--nav-text:#faf3e0;--card-shadow:0 2px 12px rgba(100,70,30,.08);--qcard-shadow:0 2px 12px rgba(100,70,30,.06);--dark-card-bg:rgba(255,255,255,.08);--dark-opt-border:rgba(255,255,255,.1);--dark-opt-sel:rgba(139,105,20,.15);--dark-ex-correct:rgba(46,125,50,.15);--dark-ex-wrong:rgba(180,80,48,.15);--dark-txt-dim:rgba(255,255,255,.4);--wr-item-hover:rgba(139,105,20,.06);--opt-bg:#fffef8;--opt-border:1px solid #d4c4a0;--opt-first-bg:rgba(139,105,20,.06);--opt-first-border:#8b6914;--wr-bg:#fdf8ef}
+
+/* ===== BOLD HEADINGS for styles 9, 11, 14 ===== */
+[data-style="9"] h1,[data-style="9"] h2,[data-style="9"] .phase-card .name,[data-style="9"] .phase-label,[data-style="11"] h1,[data-style="11"] h2,[data-style="11"] .phase-card .name,[data-style="11"] .phase-label,[data-style="14"] h1,[data-style="14"] h2,[data-style="14"] .phase-card .name,[data-style="14"] .phase-label{font-weight:700!important}
+
+/* ===== GLOBAL ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:var(--fp);color:var(--near);background:var(--bg);line-height:1.47;letter-spacing:-.374px;min-height:100dvh;display:flex;flex-direction:column;align-items:center;-webkit-font-smoothing:antialiased}
-nav{position:sticky;top:0;z-index:100;width:100%;height:48px;background:rgba(0,0,0,.85);backdrop-filter:saturate(180%)blur(20px);-webkit-backdrop-filter:saturate(180%)blur(20px);display:flex;align-items:center;justify-content:center}
-nav .inner{width:100%;max-width:calc(980px + env(safe-area-inset-left) + env(safe-area-inset-right));display:flex;align-items:center;justify-content:space-between;padding:0 22px;padding-left:calc(22px + env(safe-area-inset-left));padding-right:calc(22px + env(safe-area-inset-right))}
-nav a{color:#fff;text-decoration:none;font-size:13px;font-weight:400;transition:.2s;padding:10px 12px;display:inline-block;min-height:44px;line-height:24px}
+body{font-family:var(--fp);color:var(--near);background:var(--body-bg);line-height:1.47;letter-spacing:-.374px;min-height:100dvh;display:flex;flex-direction:column;align-items:center;-webkit-font-smoothing:antialiased}
+nav{position:sticky;top:0;z-index:100;width:100%;height:48px;background:var(--nav-bg);backdrop-filter:saturate(180%)blur(20px);-webkit-backdrop-filter:saturate(180%)blur(20px);display:flex;align-items:center;justify-content:center}
+nav .inner{width:100%;max-width:calc(980px + env(safe-area-inset-left) + env(safe-area-inset-right));display:flex;align-items:center;justify-content:space-between;padding:0 22px}
+nav a{color:var(--nav-text);text-decoration:none;font-size:13px;font-weight:400;transition:.2s;padding:10px 12px;display:inline-block;min-height:44px;line-height:24px}
 nav a:focus-visible{outline:2px solid var(--blued);outline-offset:2px;border-radius:4px}
 nav a:hover{opacity:.7}
 nav .logo{font-size:18px;font-weight:600;letter-spacing:-.5px}
+nav .style-select{background:rgba(255,255,255,.1);color:var(--nav-text);border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:4px 8px;font-size:12px;font-family:var(--fp);cursor:pointer;min-height:30px;outline:none}
+nav .style-select:focus{outline:2px solid var(--blued);outline-offset:2px}
 .section{width:100%;padding:80px 24px 100px}
 .section.dark{background:var(--black);color:#fff}
 .section.light{background:var(--sect);color:var(--near)}
@@ -26,14 +64,13 @@ h2{font-size:clamp(22px,3.5vw,40px);font-weight:600;line-height:1.1;letter-spaci
 p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:var(--text)}
 .dark p{color:rgba(255,255,255,.8)}
 .phase-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:40px}
-.phase-card{background:var(--bg);border-radius:var(--radius);padding:24px;cursor:pointer;transition:all .2s;border:none;text-align:left;position:relative;overflow:hidden;display:block;width:100%;font-family:var(--fp);font-size:inherit;color:inherit;min-height:120px}
-.dark .phase-card{background:rgba(255,255,255,.08);color:#fff}
-.light .phase-card{box-shadow:0 2px 20px rgba(0,0,0,.06)}
+.phase-card{background:var(--bg);border-radius:var(--radius);padding:24px;cursor:pointer;transition:all .2s;border:none;text-align:left;position:relative;overflow:hidden;display:block;width:100%;font-family:var(--fp);font-size:inherit;color:inherit;min-height:120px;box-shadow:var(--card-shadow)}
+.dark .phase-card{background:var(--dark-card-bg);color:#fff}
 .phase-card:not(.locked):hover{transform:translateY(-2px)}
 .dark .phase-card:not(.locked):hover{background:rgba(255,255,255,.12)}
 .phase-card:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 .phase-card .num{font-size:12px;font-weight:600;color:var(--dim);margin-bottom:4px;font-family:var(--fm)}
-.dark .phase-card .num{color:rgba(255,255,255,.4)}
+.dark .phase-card .num{color:var(--dark-txt-dim)}
 .phase-card .name{font-size:17px;font-weight:600;margin-bottom:4px;line-height:1.3}
 .phase-card .desc{font-size:12px;color:var(--dim);line-height:1.4}
 .dark .phase-card .desc{color:rgba(255,255,255,.5)}
@@ -41,19 +78,18 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 .dark .phase-card .check{color:var(--blued)}
 .phase-card.locked{opacity:.4;pointer-events:none;cursor:default}
 .phase-card .status{position:absolute;top:12px;right:16px;font-size:14px}
-.q-card{background:var(--bg);border-radius:12px;padding:32px 28px;max-width:680px;margin:0 auto}
-.dark .q-card{background:rgba(255,255,255,.1)}
-.light .q-card,.white .q-card{box-shadow:0 4px 30px rgba(0,0,0,.08)}
+.q-card{background:var(--bg);border-radius:12px;padding:32px 28px;max-width:680px;margin:0 auto;box-shadow:var(--qcard-shadow)}
+.dark .q-card{background:var(--dark-card-bg)}
 .q-prompt{font-size:18px;line-height:1.6;font-weight:500;margin-bottom:20px}
 .q-prompt small{font-size:13px;font-weight:400;color:var(--dim)}
 .dark .q-prompt small{color:rgba(255,255,255,.5)}
 .options{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-.opt{display:block;width:100%;padding:12px 16px;border:2px solid var(--sect);border-radius:var(--radius);background:transparent;font-size:14px;text-align:left;cursor:pointer;transition:all .15s;font-family:var(--fp);color:inherit;min-height:44px;line-height:1.4;word-break:break-word;hyphens:auto}
-.dark .opt{border-color:rgba(255,255,255,.15);color:#fff}
+.opt{display:block;width:100%;padding:12px 16px;border:2px solid var(--sect);background:var(--opt-bg);border-radius:var(--radius);font-size:14px;text-align:left;cursor:pointer;transition:all .15s;font-family:var(--fp);color:inherit;min-height:44px;line-height:1.4;word-break:break-word;hyphens:auto}
+.dark .opt{border-color:var(--dark-opt-border);color:#fff;background:var(--opt-bg)}
 .opt:hover{border-color:var(--blue)}
 .opt:focus-visible{outline:3px solid var(--blue);outline-offset:1px;border-color:var(--blue)}
-.opt.selected{border-color:var(--blue);background:rgba(0,113,227,.06)}
-.dark .opt.selected{background:rgba(0,113,227,.15)}
+.opt.selected{border-color:var(--blue);background:var(--opt-first-bg)}
+.dark .opt.selected{background:var(--dark-opt-sel)}
 .opt.correct{background:var(--green);color:#fff;border-color:var(--green)}
 .opt.wrong{background:var(--red);color:#fff;border-color:var(--red)}
 .opt:disabled{cursor:default}
@@ -74,14 +110,14 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 .dark .progress-bar{background:rgba(255,255,255,.15)}
 .progress-fill{height:100%;background:var(--blue);border-radius:2px;transition:width .3s}
 .progress-txt{font-size:12px;color:var(--dim);font-family:var(--fm);white-space:nowrap}
-.dark .progress-txt{color:rgba(255,255,255,.4)}
+.dark .progress-txt{color:var(--dark-txt-dim)}
 .phase-label{font-size:14px;font-weight:600;margin-bottom:4px}
 .explanation{margin-top:16px;padding:14px 18px;border-radius:8px;font-size:13px;line-height:1.6;display:none}
 .explanation.show{display:block}
 .explanation.correct{background:rgba(52,199,89,.1);border-left:3px solid var(--green)}
 .explanation.wrong{background:rgba(255,59,48,.1);border-left:3px solid var(--red)}
-.dark .explanation.correct{background:rgba(52,199,89,.15)}
-.dark .explanation.wrong{background:rgba(255,59,48,.15)}
+.dark .explanation.correct{background:var(--dark-ex-correct)}
+.dark .explanation.wrong{background:var(--dark-ex-wrong)}
 .stars{font-size:32px;margin:8px 0;letter-spacing:4px}
 .star-filled{color:var(--blue)}
 .star-empty{color:var(--sect)}
@@ -91,80 +127,29 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 .dark .back-btn{color:var(--blued)}
 .mastery{display:flex;justify-content:center;gap:8px;margin:16px 0;flex-wrap:wrap}
 .mastery span{align-items:center;gap:4px;font-size:12px;color:var(--dim);font-family:var(--fm)}
-.dark .mastery span{color:rgba(255,255,255,.4)}
+.dark .mastery span{color:var(--dark-txt-dim)}
 .tool-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:24px}
 .tool-btn{font-size:11px;color:var(--dim);text-decoration:underline;cursor:pointer;background:none;border:none;font-family:var(--fp);padding:6px 8px;min-height:44px;min-width:44px;display:inline-flex;align-items:center;gap:4px}
 .tool-btn:hover{opacity:1;color:var(--near)}
-.dark .tool-btn{color:rgba(255,255,255,.4)}
+.dark .tool-btn{color:var(--dark-txt-dim)}
 .dark .tool-btn:hover{color:#fff}
-/* 错题集 */
-.wrong-item{background:var(--bg);border-radius:var(--radius);padding:16px 20px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;flex-wrap:wrap}
+.wrong-item{background:var(--wr-bg);border-radius:var(--radius);padding:16px 20px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;flex-wrap:wrap;box-shadow:0 1px 8px rgba(0,0,0,.06)}
 .light .wrong-item{box-shadow:0 1px 8px rgba(0,0,0,.06)}
-.dark .wrong-item{background:rgba(255,255,255,.08);color:#fff}
-.wrong-item:hover{background:rgba(0,113,227,.04)}
+.dark .wrong-item{background:var(--dark-card-bg);color:#fff}
+.wrong-item:hover{background:var(--wr-item-hover)}
 .wrong-item .w-info{flex:1;min-width:0}
-.wrong-item .w-q {font-size:15px;font-weight:500;line-height:1.4;word-break:break-all}
+.wrong-item .w-q{font-size:15px;font-weight:500;line-height:1.4;word-break:break-all}
 .wrong-item .w-meta{font-size:11px;color:var(--dim);margin-top:2px}
 .wrong-item .w-answer{font-size:13px;color:var(--green);font-weight:600}
 .wrong-item .w-badge{background:var(--red);color:#fff;border-radius:12px;padding:2px 10px;font-size:11px;font-weight:600;white-space:nowrap}
-.wrong-item .w-badge.one{background:rgba(255,59,48,.2);color:var(--red)} .wrong-item .w-badge.many{background:var(--red);color:#fff}
+.wrong-item .w-badge.one{background:rgba(255,59,48,.2);color:var(--red)}
+.wrong-item .w-badge.many{background:var(--red);color:#fff}
 @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeIn .3s ease-out}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
-@media(max-width:480px){
-  body{letter-spacing:-.2px}
-  .section{padding:36px 14px 48px}
-  .section.dark:first-of-type{padding:40px 14px 36px}
-  nav .inner{padding:0 12px}
-  nav a{font-size:12px;padding:10px 8px}
-  h1{font-size:clamp(22px,7vw,30px);line-height:1.15}
-  .q-card{padding:16px 14px}
-  .q-prompt{font-size:15px;line-height:1.5}
-  .q-prompt em,.q-prompt u{word-break:break-all}
-  .opt{font-size:13px;padding:10px 12px;min-height:40px}
-  .opt::after{font-size:12px}
-  .btn{font-size:13px;padding:8px 14px;min-height:40px;min-width:40px}
-  .phase-card{padding:16px 14px;min-height:90px}
-  .phase-card .name{font-size:15px}
-  .phase-card .desc,.phase-card .num{font-size:11px}
-  .back-btn{left:2px;top:54px;font-size:22px;padding:4px 10px;min-width:40px;min-height:40px}
-  .tool-btn{font-size:10px;padding:6px;min-height:40px;gap:2px}
-  .mastery span{font-size:11px}
-  .progress-txt{font-size:11px}
-  .explanation{font-size:12px;padding:10px 14px}
-  .stars{font-size:24px;letter-spacing:2px}
-  .btn-row{gap:8px}
-  .btn-row .btn{font-size:12px;padding:6px 12px}
-  .phase-grid{gap:10px}
-  .wrong-item{padding:12px 14px;gap:8px}
-  .wrong-item .w-q{font-size:14px}
-}
-@media(max-width:380px){
-  .section{padding:28px 10px 36px}
-  h1{font-size:clamp(18px,6vw,24px)}
-  .q-card{padding:12px 10px}
-  .q-prompt{font-size:14px}
-  .opt{font-size:12px;padding:8px 10px;min-height:36px}
-  .phase-card{padding:12px 10px;min-height:80px}
-  .phase-card .name{font-size:14px}
-  .back-btn{font-size:20px;left:0;top:52px}
-  .btn{font-size:12px;padding:6px 10px;min-height:36px;min-width:36px}
-  .btn-row{gap:6px}
-  .tool-row{gap:4px;margin-top:16px}
-  .tool-btn{font-size:9px;padding:4px;min-height:36px}
-  .phase-card .desc{font-size:10px}
-  .phase-card .check{font-size:11px}
-  .wrong-item{padding:10px 12px}
-  .wrong-item .w-q{font-size:13px}
-}
-@media(max-width:600px){
-  .section{padding:48px 16px 64px;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
-  .q-card{padding:20px 16px}
-  .phase-grid{grid-template-columns:1fr}
-  .q-prompt{font-size:16px}
-  h1{letter-spacing:-.15px}
-  .back-btn{left:4px;top:56px;padding-bottom:calc(12px + env(safe-area-inset-bottom))}
-}
+@media(max-width:480px){body{letter-spacing:-.2px}.section{padding:36px 14px 48px}.section.dark:first-of-type{padding:40px 14px 36px}nav .inner{padding:0 12px}nav a{font-size:12px;padding:10px 8px}h1{font-size:clamp(22px,7vw,30px);line-height:1.15}.q-card{padding:16px 14px}.q-prompt{font-size:15px;line-height:1.5}.q-prompt em,.q-prompt u{word-break:break-all}.opt{font-size:13px;padding:10px 12px;min-height:40px}.opt::after{font-size:12px}.btn{font-size:13px;padding:8px 14px;min-height:40px;min-width:40px}.phase-card{padding:16px 14px;min-height:90px}.phase-card .name{font-size:15px}.phase-card .desc,.phase-card .num{font-size:11px}.back-btn{left:2px;top:54px;font-size:22px;padding:4px 10px;min-width:40px;min-height:40px}.tool-btn{font-size:10px;padding:6px;min-height:40px;gap:2px}.mastery span{font-size:11px}.progress-txt{font-size:11px}.explanation{font-size:12px;padding:10px 14px}.stars{font-size:24px;letter-spacing:2px}.btn-row{gap:8px}.btn-row .btn{font-size:12px;padding:6px 12px}.phase-grid{gap:10px}.wrong-item{padding:12px 14px;gap:8px}.wrong-item .w-q{font-size:14px}}
+@media(max-width:380px){.section{padding:28px 10px 36px}h1{font-size:clamp(18px,6vw,24px)}.q-card{padding:12px 10px}.q-prompt{font-size:14px}.opt{font-size:12px;padding:8px 10px;min-height:36px}.phase-card{padding:12px 10px;min-height:80px}.phase-card .name{font-size:14px}.back-btn{font-size:20px;left:0;top:52px}.btn{font-size:12px;padding:6px 10px;min-height:36px;min-width:36px}.btn-row{gap:6px}.tool-row{gap:4px;margin-top:16px}.tool-btn{font-size:9px;padding:4px;min-height:36px}.phase-card .desc{font-size:10px}.phase-card .check{font-size:11px}.wrong-item{padding:10px 12px}.wrong-item .w-q{font-size:13px}}
+@media(max-width:600px){.section{padding:48px 16px 64px}.q-card{padding:20px 16px}.phase-grid{grid-template-columns:1fr}.q-prompt{font-size:16px}h1{letter-spacing:-.15px}.back-btn{left:4px;top:56px}}
 </style>
 </head>
 <body>
@@ -172,7 +157,21 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 <nav>
   <div class="inner">
     <a href="#" class="logo" onclick="showHome();return false">◈</a>
-    <a href="#" onclick="showHome();return false">首页</a>
+    <div style="display:flex;align-items:center;gap:12px">
+      <select class="style-select" id="styleSwitcher" onchange="setStyle(this.value)" aria-label="切换主题">
+        <option value="9" selected>Mono Noir</option>
+        <option value="2">Warm Terra</option>
+        <option value="5">Ghibli Forest</option>
+        <option value="7">Brutalist Paper</option>
+        <option value="8">Cyber Y2K</option>
+        <option value="10">Sakura Light</option>
+        <option value="11">Midnight Ink</option>
+        <option value="14">Concrete</option>
+        <option value="15">Neon Tokyo</option>
+        <option value="17">Parchment</option>
+      </select>
+      <a href="#" onclick="showHome();return false">首页</a>
+    </div>
   </div>
 </nav>
 
@@ -183,6 +182,17 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 <div id="announce" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
 
 <script>
+// ==================== STYLE SWITCHER ====================
+function setStyle(v){
+  document.documentElement.setAttribute('data-style',v);
+  localStorage.setItem('rcq4_style',v);
+}
+(function(){
+  let saved = localStorage.getItem('rcq4_style')||'9';
+  document.getElementById('styleSwitcher').value = saved;
+  document.documentElement.setAttribute('data-style',saved);
+})();
+
 // ==================== CURRICULUM DATA ====================
 const DATA = {title:'定语从句大师',phases:[
 {id:'rec',name:'识别定语从句',s:'你能找出定语从句吗？',d:'在句子中找出定语从句的部分',q:[
@@ -306,7 +316,7 @@ function renderHome(){
   app.innerHTML=h;
 }
 
-// ==================== EXPORT / IMPORT PROGRESS ====================
+// ==================== EXPORT / IMPORT ====================
 function exportProgress(){
   let data=JSON.stringify(S.progress,null,2);
   let blob=new Blob([data],{type:'application/json'});
@@ -342,7 +352,7 @@ function importProgress(){
   inp.click();
 }
 
-// ==================== WRONG-BOOK (错题集) ====================
+// ==================== WRONG-BOOK ====================
 function loadWrong(){try{return JSON.parse(localStorage.getItem('rcq4_wrong')||'{}')}catch(e){return{}}}
 function saveWrong(d){localStorage.setItem('rcq4_wrong',JSON.stringify(d))}
 function qKey(q){return q._key||(q._key=btoa((q.q||'')+'|'+(Array.isArray(q.a)?q.a.join(','):q.a||'')).slice(0,24))}
@@ -365,59 +375,40 @@ function showWrongBank(){
     let phaseLabel = it.phaseName || it.phaseId;
     let correctA = Array.isArray(it.correctAnswer) ? it.correctAnswer.join(' / ') : it.correctAnswer;
     h+=`<div class="wrong-item fade-in" onclick="retakeOne('${it.key}')" tabindex="0" role="button" aria-label="重做此题">
-      <div class="w-info">
-        <div class="w-q">${it.prompt}</div>
-        <div class="w-meta">${phaseLabel} · 正确答案：<span class="w-answer">${esc(correctA)}</span></div>
-      </div>
-      <span class="${cls}">×${it.attempts}</span>
-    </div>`;
+      <div class="w-info"><div class="w-q">${it.prompt}</div>
+      <div class="w-meta">${phaseLabel} · 正确答案：<span class="w-answer">${esc(correctA)}</span></div></div>
+      <span class="${cls}">×${it.attempts}</span></div>`;
   }
-  h+=`</div>
-    <div class="btn-row">
-      <button class="btn btn-outline" onclick="retakeAll()">🔁 重做全部错题</button>
-      <button class="btn btn-outline" onclick="if(confirm('清空所有错题记录？')){localStorage.removeItem('rcq4_wrong');renderHome();announce('✅ 错题集已清空')}" style="border-color:var(--red);color:var(--red)">🗑 清空错题集</button>
-      <button class="btn btn-primary" onclick="renderHome()">← 返回首页</button>
-    </div>
-  </div></div>`;
+  h+=`</div><div class="btn-row">
+    <button class="btn btn-outline" onclick="retakeAll()">🔁 重做全部错题</button>
+    <button class="btn btn-outline" onclick="if(confirm('清空所有错题记录？')){localStorage.removeItem('rcq4_wrong');renderHome();announce('✅ 错题集已清空')}" style="border-color:var(--red);color:var(--red)">🗑 清空错题集</button>
+    <button class="btn btn-primary" onclick="renderHome()">← 返回首页</button></div></div></div>`;
   app.innerHTML=h;
 }
 
 function retakeOne(key){
   let wk = loadWrong();
-  let it = wk[key];
-  if(!it) return;
-  // Build a queue from the wrong question
-  let phase = DATA.phases.find(p=>p.id===it.phaseId);
-  if(!phase){ alert('找不到对应的学习阶段'); return; }
-  // Re-find the original question object by matching prompt
-  let match = phase.q.find(q=>q.q===it.prompt);
-  if(!match){ alert('找不到原始题目'); return; }
-  // Start a phase with just this question + the rest of that phase's questions
+  let it = wk[key]; if(!it) return;
+  let phase = DATA.phases.find(p=>p.id===it.phaseId); if(!phase) return;
+  let match = phase.q.find(q=>q.q===it.prompt); if(!match) return;
   S.active=it.phaseId; S.idx=0; S.score=0; S.total=0; S.answered=false; S.sel=null;
-  // Shuffle all questions from this phase, but put the wrong one first
   let rest = shuffle([...phase.q.filter(q=>q.q!==it.prompt)]);
-  S.phaseQs = [match, ...rest];
-  // Remove from wrong-book if they get it right later (handled in check())
-  render();
+  S.phaseQs = [match, ...rest]; render();
 }
 
 function retakeAll(){
-  let wk = loadWrong();
-  let items = Object.values(wk);
-  if(!items.length){ alert('没有错题'); return; }
-  // Collect original question objects
+  let wk = loadWrong(); let items = Object.values(wk);
+  if(!items.length) return;
   let questions = [];
   for(let it of items){
     let phase = DATA.phases.find(p=>p.id===it.phaseId);
     if(!phase) continue;
     let match = phase.q.find(q=>q.q===it.prompt);
-    if(match){ questions.push(match); }
+    if(match) questions.push(match);
   }
-  if(!questions.length){ alert('找不到错题对应的原始题目'); return; }
-  // Start a pseudo-phase: "错题复习"
+  if(!questions.length) return;
   S.active='_wrong'; S.idx=0; S.score=0; S.total=0; S.answered=false; S.sel=null;
-  S.phaseQs=shuffle(questions);
-  render();
+  S.phaseQs=shuffle(questions); render();
 }
 
 // ==================== PHASE PLAY ====================
@@ -446,8 +437,7 @@ function renderPhase(){
   h+=`</div><div class="explanation" id="expl"></div><div class="btn-row">
     <button class="btn btn-primary" id="checkBtn" disabled onclick="check()">检查</button>
     <button class="btn btn-outline" id="nextBtn" style="display:none" onclick="next()">下一题 →</button>
-  </div></div></div></div>`;
-  app.innerHTML=h;
+  </div></div></div></div>`; app.innerHTML=h;
 }
 function esc(s){return(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;')}
 
@@ -457,39 +447,20 @@ function pick(el){
   document.getElementById('checkBtn').disabled=false;
 }
 
-// ==================== CHECK (multi-answer + wrong-book recording) ====================
 function check(){
   if(S.answered)return;
-  let q=S.phaseQs[S.idx];
-  let correct=false;
+  let q=S.phaseQs[S.idx];let correct=false;
   let answers=Array.isArray(q.a)?q.a:[q.a];
   for(let ans of answers){if(norm(S.sel)===norm(ans)){correct=true;break}}
   S.answered=true;S.total++;if(correct)S.score++;
-
-  // 错题集: if wrong, record it. If right AND it was in wrong-book, remove it.
-  let k = qKey(q);
-  let wk = loadWrong();
+  let k = qKey(q);let wk = loadWrong();
   if(!correct){
     let an = Array.isArray(q.a) ? q.a[0] : q.a;
     let phase = DATA.phases.find(ph=>ph.id===S.active);
-    if(wk[k]){
-      wk[k].attempts++;
-      wk[k].lastWrong = Date.now();
-      wk[k].userAnswer = S.sel;
-    } else {
-      wk[k] = {
-        key: k, phaseId: S.active, phaseName: (phase||{}).name||S.active,
-        prompt: q.q, correctAnswer: an, userAnswer: S.sel,
-        attempts: 1, lastWrong: Date.now()
-      };
-    }
+    if(wk[k]){wk[k].attempts++;wk[k].lastWrong=Date.now();wk[k].userAnswer=S.sel;}
+    else{wk[k]={key:k,phaseId:S.active,phaseName:(phase||{}).name||S.active,prompt:q.q,correctAnswer:an,userAnswer:S.sel,attempts:1,lastWrong:Date.now()};}
     saveWrong(wk);
-  } else if(wk[k]){
-    // Answered correctly! Remove from wrong-book
-    delete wk[k];
-    saveWrong(wk);
-  }
-
+  }else if(wk[k]){delete wk[k];saveWrong(wk);}
   document.querySelectorAll('.opt').forEach(b=>{
     let match=false;
     for(let ans of answers){if(norm(b.dataset.v)===norm(ans)){match=true;break}}
@@ -512,14 +483,11 @@ function next(){
   if(!isWrongMode){
     if(!S.progress[S.active])S.progress[S.active]={score:0};
     S.progress[S.active].total=(S.progress[S.active].total||0)+1;
-    S.progress[S.active].score=Math.max(S.progress[S.active].score||0,S.score);
-    save();
-  }
-  S.idx++;render();
+    S.progress[S.active].score=Math.max(S.progress[S.active].score||0,S.score); save();
+  }S.idx++;render();
 }
 function norm(s){return(s||'').toLowerCase().replace(/[.,!?;:'"《》「」『』（）()]/g,'').replace(/\s+/g,' ').trim()}
 
-// ==================== COMPLETE ====================
 function renderComplete(app,p,isWrongMode){
   let t=S.phaseQs.length,pct=Math.round(S.score/t*100),stars=pct>=90?3:pct>=70?2:pct>=50?1:0;
   if(isWrongMode){
@@ -531,12 +499,10 @@ function renderComplete(app,p,isWrongMode){
       <p style="color:rgba(255,255,255,.5)">${pct>=70?'大部分都掌握了！':'继续加油，回到错题集再练一次。'}</p>
       <div class="btn-row" style="margin-top:24px">
         <button class="btn btn-outline" onclick="showWrongBank()">← 返回错题集</button>
-        <button class="btn btn-primary" onclick="renderHome()">← 返回首页</button>
-      </div></div></div>`;
+        <button class="btn btn-primary" onclick="renderHome()">← 返回首页</button></div></div></div>`;
     app.innerHTML=h; return;
   }
-  let prev=S.progress[S.active]||{score:0};
-  let need=pctNeeded(t);
+  let prev=S.progress[S.active]||{score:0},need=pctNeeded(t);
   if(S.score>prev.score){S.progress[S.active]={score:S.score,total:t};save()}
   let i=DATA.phases.indexOf(p),np=DATA.phases[i+1],all=DATA.phases.every(ph=>isComplete(ph.id));
   let unlocked=S.score>=need;
@@ -549,23 +515,15 @@ function renderComplete(app,p,isWrongMode){
   else if(!unlocked) h+=`<p style="color:rgba(255,255,255,.5)">需要≥${need}/${t}题正确（${Math.ceil(need/t*100)}%）才能解锁下一阶段，再练一次！</p>`;
   else if(unlocked&&pct<90) h+=`<p style="color:rgba(255,255,255,.5)">很好！准备进入下一阶段了吗？</p>`;
   else h+=`<p style="color:rgba(255,255,255,.5)">太棒了！完美通关！</p>`;
-  h+=`<div class="btn-row" style="margin-top:24px">
-    <button class="btn btn-outline" onclick="showHome()">← 全部阶段</button>
-    <button class="btn btn-primary" onclick="startPhase('${p.id}')">↻ 重做</button>`;
+  h+=`<div class="btn-row" style="margin-top:24px"><button class="btn btn-outline" onclick="showHome()">← 全部阶段</button><button class="btn btn-primary" onclick="startPhase('${p.id}')">↻ 重做</button>`;
   if(np&&!isLocked(np.id)) h+=`<button class="btn btn-primary" style="background:var(--green)" onclick="startPhase('${np.id}')">${np.name} →</button>`;
   else if(np&&isLocked(np.id)) h+=`<button class="btn btn-primary" disabled style="opacity:.4">🔒 ${np.name} (需≥${pctNeeded(TOTALS[np.id])}题)</button>`;
   if(all) h+=`<p style="margin-top:24px;color:var(--green);font-size:17px;font-weight:600">🎉 全部8个阶段完成！你已经掌握了定语从句！</p>`;
-  h+=`</div></div></div>`;
-  app.innerHTML=h;
+  h+=`</div></div></div>`; app.innerHTML=h;
 }
 
 function showHome(){S.active=null;render()}
-
-function announce(msg){
-  let el=document.getElementById('announce');
-  if(el){el.textContent='';setTimeout(()=>{el.textContent=msg},50)}
-}
-
+function announce(msg){let el=document.getElementById('announce');if(el){el.textContent='';setTimeout(()=>{el.textContent=msg},50)}}
 render();
 </script>
 </body>

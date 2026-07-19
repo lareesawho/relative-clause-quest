@@ -47,6 +47,10 @@
 /* ===== STYLE: Sunset Gramlin (brand theme) ===== */
 [data-style="sunset"]{--bg:#fff5ee;--sect:#fff0e6;--black:#2d1b10;--near:#2d1b10;--text:#3d2e1e;--dim:#8a6a50;--blue:#ff8c42;--blueh:#e07030;--blued:#ffb088;--green:#4caf50;--red:#e07070;--radius:16px;--fp:system-ui,-apple-system,sans-serif;--fm:ui-monospace,monospace;--body-bg:#fff5ee;--nav-bg:rgba(45,27,16,.92);--nav-text:#fff0e0;--card-shadow:0 4px 20px rgba(200,120,80,.12);--qcard-shadow:0 4px 24px rgba(200,120,80,.1);--dark-card-bg:rgba(255,255,255,.1);--dark-opt-border:rgba(255,255,255,.12);--dark-opt-sel:rgba(255,140,66,.15);--dark-ex-correct:rgba(76,175,80,.15);--dark-ex-wrong:rgba(224,112,112,.15);--dark-txt-dim:rgba(255,255,255,.4);--wr-item-hover:rgba(255,140,66,.08);--opt-bg:#fff;--opt-border:2px solid #f0d8c0;--opt-first-bg:rgba(255,140,66,.1);--opt-first-border:#ff8c42;--wr-bg:#fff}
 
+/* ===== STYLE: Gramlin Paper ===== */
+[data-style="gramlin_paper"]{--bg:#faf3e0;--sect:#f5ecdb;--black:#2d4a3e;--near:#2d4a3e;--text:#3d5a3e;--dim:#7a9a6a;--blue:#7ec8a0;--blueh:#5cb878;--blued:#a0dcc0;--green:#2e7d32;--red:#c44;--radius:8px;--fp:Georgia,serif;--fm:'Courier New',monospace;--body-bg:#faf3e0;--nav-bg:rgba(45,74,62,.95);--nav-text:#d4f0d8;--card-shadow:2px 2px 0 rgba(45,74,62,.1);--qcard-shadow:3px 3px 0 rgba(45,74,62,.08);--dark-card-bg:rgba(255,255,255,.1);--dark-opt-border:rgba(255,255,255,.08);--dark-opt-sel:rgba(126,200,160,.15);--dark-ex-correct:rgba(46,125,50,.15);--dark-ex-wrong:rgba(196,68,68,.15);--dark-txt-dim:rgba(255,255,255,.4);--wr-item-hover:rgba(126,200,160,.06);--opt-bg:#fff;--opt-border:2px solid #2d4a3e;--opt-first-bg:rgba(126,200,160,.1);--opt-first-border:#7ec8a0;--wr-bg:#fff}
+[data-style="gramlin_paper"] h1,[data-style="gramlin_paper"] h2{font-family:Georgia,serif;font-weight:700!important;letter-spacing:-.5px}
+
 /* ===== BOLD HEADINGS for styles 9, 11, 14, gramlin ===== */
 [data-style="9"] h1,[data-style="9"] h2,[data-style="9"] .phase-card .name,[data-style="9"] .phase-label,[data-style="gramlin"] h1,[data-style="gramlin"] h2,[data-style="gramlin"] .phase-card .name,[data-style="gramlin"] .phase-label,[data-style="11"] h1,[data-style="11"] h2,[data-style="11"] .phase-card .name,[data-style="11"] .phase-label,[data-style="14"] h1,[data-style="14"] h2,[data-style="14"] .phase-card .name,[data-style="14"] .phase-label{font-weight:700!important}
 
@@ -177,13 +181,19 @@ a:focus-visible,button:focus-visible,.opt:focus-visible,.phase-card:focus-visibl
   <div class="inner">
     <a href="#" class="logo" onclick="showHome();return false"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAgElEQVR4nO3WsQ2AMAwF0S8eAhbACCyDxAoZgREYgREYgRGQQAoK8kUiUtL8+0pX/u9eEgAA8KX6Im/lqTuKK/mXLgAA2t4/0o0uAIBeylv5UnclANAt+Sl/6H65AwA4kec5cuoAuB8BH/0i4AMA7HMAAAAAAOBHjwAAHqoROwAAAABJRU5ErkJggg==" style="width:24px;height:24px;border-radius:6px;vertical-align:middle"></a>
     <div style="display:flex;align-items:center;gap:12px">
+      <select class="style-select" onchange="setLang(this.value)" aria-label="Language" id="langSwitcher">
+        <option value="zh">中文</option>
+        <option value="en">EN</option>
+        <option value="es">ES</option>
+      </select>
       <select class="style-select" id="styleSwitcher" onchange="setStyle(this.value)" aria-label="切换主题">
-        <option value="gramlin" selected>Gramlin (default)</option>
+        <option value="gramlin" selected>Gramlin</option>
+        <option value="7">Brutalist Paper</option>
+        <option value="gramlin_paper">Gramlin Paper</option>
         <option value="sunset">Sunset</option>
         <option value="9">Mono Noir</option>
         <option value="2">Warm Terra</option>
         <option value="5">Ghibli Forest</option>
-        <option value="7">Brutalist Paper</option>
         <option value="8">Cyber Y2K</option>
         <option value="10">Sakura Light</option>
         <option value="11">Midnight Ink</option>
@@ -320,6 +330,28 @@ const DATA = {title:'Gramlingo',phases:[
 {q:'填空：\"I\'ll be back ___ a few minutes.\"',a:'in',o:['in','on','at','by'],t:'in + 一段时间 = 在……之后'},
 ]},
 ]};
+
+// ==================== i18n ====================
+let L=localStorage.getItem('gram_lang')||'zh';
+const T={
+zh:{check:'检查',next:'下一题 →',back:'← 返回首页',reset:'🔄 重置进度',backup:'⬇️ 备份进度',restore:'⬆️ 恢复进度',wrong:'📋 错题集',
+  mastery:'答对',locked:'已锁定',done:'已完成',start:'开始 →',redo:'重做 →',need:'需≥',phases:'个阶段',questions:'道题',
+  clauses:'定语从句 · Relative Clauses',preps:'介词 · Prepositions',
+  subtitle:'循序渐进。适合中国英语学习者的语法训练系统。',
+  correct:'✓ 正确！',wrong:'✗',home:'首页'},
+en:{check:'Check',next:'Next →',back:'← Home',reset:'🔄 Reset',backup:'⬇️ Backup',restore:'⬆️ Restore',wrong:'📋 Wrong Book',
+  mastery:'correct',locked:'Locked',done:'Done',start:'Start →',redo:'Retry →',need:'≥',phases:'phases',questions:'questions',
+  clauses:'Relative Clauses',preps:'Prepositions',
+  subtitle:'Step by step. Grammar training for Chinese English learners.',
+  correct:'✓ Correct!',wrong:'✗',home:'Home'},
+es:{check:'Verificar',next:'Siguiente →',back:'← Inicio',reset:'🔄 Reiniciar',backup:'⬇️ Copia',restore:'⬆️ Restaurar',wrong:'📋 Errores',
+  mastery:'aciertos',locked:'Bloqueado',done:'Hecho',start:'Empezar →',redo:'Reintentar →',need:'≥',phases:'fases',questions:'preguntas',
+  clauses:'Cláusulas Relativas',preps:'Preposiciones',
+  subtitle:'Paso a paso. Entrenamiento de gramática para estudiantes chinos.',
+  correct:'✓ ¡Correcto!',wrong:'✗',home:'Inicio'}
+};
+function setLang(v){L=v;localStorage.setItem('gram_lang',v);document.getElementById('langSwitcher').value=v;render();}
+function _(k){return (T[L]||T.zh)[k]||k}
 
 // ==================== STATE ====================
 const S={active:null,idx:0,score:0,total:0,phaseQs:[],answered:false,sel:null,
@@ -506,8 +538,8 @@ function renderPhase(){
   let oLabel='ABCDEFGH';
   for(let i=0;i<q.o.length;i++) h+=`<button class="opt" data-v="${esc(q.o[i])}" onclick="pick(this)">${oLabel[i]}. ${q.o[i]}</button>`;
   h+=`</div><div class="explanation" id="expl"></div><div class="btn-row">
-    <button class="btn btn-primary" id="checkBtn" disabled onclick="check()">检查</button>
-    <button class="btn btn-outline" id="nextBtn" style="display:none" onclick="next()">下一题 →</button>
+    <button class="btn btn-primary" id="checkBtn" disabled onclick="check()">${_('check')}</button>
+    <button class="btn btn-outline" id="nextBtn" style="display:none" onclick="next()">${_('next')}</button>
   </div></div></div></div>`; app.innerHTML=h;
 }
 function esc(s){return(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;')}

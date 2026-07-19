@@ -321,6 +321,24 @@ function toggleUserLock(user){
   renderAdminPanel();
 }
 
+function adminExportAll(){
+  if(!confirm('Export all user data?'))return;
+  let d={};
+  let us=JSON.parse(localStorage.getItem('gram_users')||'[]');
+  for(let u of us){
+    d[u]={
+      prog:JSON.parse(localStorage.getItem('gram_'+u+'_prog')||'{}'),
+      wrong:JSON.parse(localStorage.getItem('gram_'+u+'_wrong')||'{}'),
+      locked:localStorage.getItem('gram_'+u+'_locked')||''
+    };
+  }
+  let b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+  let a=document.createElement('a');
+  a.href=URL.createObjectURL(b);
+  a.download='gramlingo_users_backup.json';
+  a.click();
+}
+
 function switchUser(){
   if(!confirm('Switch user? Your current progress is saved.'))return;
   CUR_USER = null;
@@ -368,7 +386,7 @@ function renderAdminPanel(){
     </table>
     <div style="margin-top:24px;text-align:center">
       <button class="btn btn-outline" onclick="switchUser()">← Logout</button>
-      <button class="btn btn-outline" onclick="if(confirm('Export all user data?')){let d={};let us=JSON.parse(localStorage.getItem('gram_users')||'[]');for(let u of us){d[u]={prog:JSON.parse(localStorage.getItem('gram_'+u+'_prog')||'{}'),wrong:JSON.parse(localStorage.getItem('gram_'+u+'_wrong')||'{}'),locked:localStorage.getItem('gram_'+u+'_locked')||''}};let b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='gramlingo_users_backup.json';a.click()}\">⬇ Export All</button>
+      <button class="btn btn-outline" onclick="adminExportAll()">⬇ Export All</button>
     </div>
   </div></div>`;
   document.getElementById('app').innerHTML=h;

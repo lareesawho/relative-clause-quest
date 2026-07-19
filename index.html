@@ -255,6 +255,7 @@ a:focus-visible,button:focus-visible,.opt:focus-visible,.phase-card:focus-visibl
 
 <script>
 // ==================== STYLE SWITCHER ====================
+let CUR_USER = null;
 function setStyle(v){
   document.documentElement.setAttribute('data-style',v);
   localStorage.setItem(pfx('style'),v);
@@ -268,7 +269,6 @@ function setStyle(v){
 // ==================== MULTI-USER SYSTEM ====================
 // All storage keyed by username: gram_<user>_<key>
 function pfx(key){return 'gram_'+(CUR_USER||'')+'_'+key}
-let CUR_USER = null;
 
 function loginUser(){
   let user = document.getElementById('login-user').value.trim().toLowerCase();

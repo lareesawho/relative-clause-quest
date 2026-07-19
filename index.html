@@ -191,10 +191,27 @@ a:focus-visible,button:focus-visible,.opt:focus-visible,.phase-card:focus-visibl
 @media(max-width:480px){body{letter-spacing:-.2px}.section{padding:36px 14px 48px}.section.dark:first-of-type{padding:40px 14px 36px}nav .inner{padding:0 12px}nav a{font-size:12px;padding:10px 8px}h1{font-size:clamp(22px,7vw,30px);line-height:1.15}.q-card{padding:16px 14px}.q-prompt{font-size:15px;line-height:1.5}.q-prompt em,.q-prompt u{word-break:break-all}.opt{font-size:13px;padding:10px 12px;min-height:40px}.opt::after{font-size:12px}.btn{font-size:13px;padding:8px 14px;min-height:40px;min-width:40px}.phase-card{padding:16px 14px;min-height:90px}.phase-card .name{font-size:15px}.phase-card .desc,.phase-card .num{font-size:11px}.back-btn{left:2px;top:54px;font-size:22px;padding:4px 10px;min-width:40px;min-height:40px}.tool-btn{font-size:10px;padding:6px;min-height:40px;gap:2px}.mastery span{font-size:11px}.progress-txt{font-size:11px}.explanation{font-size:12px;padding:10px 14px}.stars{font-size:24px;letter-spacing:2px}.btn-row{gap:8px}.btn-row .btn{font-size:12px;padding:6px 12px}.phase-grid{gap:10px}.wrong-item{padding:12px 14px;gap:8px}.wrong-item .w-q{font-size:14px}}
 @media(max-width:380px){.section{padding:28px 10px 36px}h1{font-size:clamp(18px,6vw,24px)}.q-card{padding:12px 10px}.q-prompt{font-size:14px}.opt{font-size:12px;padding:8px 10px;min-height:36px}.phase-card{padding:12px 10px;min-height:80px}.phase-card .name{font-size:14px}.back-btn{font-size:20px;left:0;top:52px}.btn{font-size:12px;padding:6px 10px;min-height:36px;min-width:36px}.btn-row{gap:6px}.tool-row{gap:4px;margin-top:16px}.tool-btn{font-size:9px;padding:4px;min-height:36px}.phase-card .desc{font-size:10px}.phase-card .check{font-size:11px}.wrong-item{padding:10px 12px}.wrong-item .w-q{font-size:13px}}
 @media(max-width:600px){.section{padding:48px 16px 64px}.q-card{padding:20px 16px}.phase-grid{grid-template-columns:1fr}.q-prompt{font-size:16px}h1{letter-spacing:-.15px}.back-btn{left:4px;top:56px}}
+
+/* PIN screen */
+.pin-screen{position:fixed;inset:0;background:var(--body-bg);display:flex;align-items:center;justify-content:center;z-index:9999}
+.pin-card{background:var(--bg);border-radius:var(--radius);box-shadow:var(--qcard-shadow);padding:40px 32px;text-align:center;max-width:320px;width:90%}
+.pin-card h2{font-family:'Baloo 2',cursive;color:var(--near);margin:0}
 </style>
 </head>
 <body>
 
+<div id="pin-screen" class="pin-screen">
+  <div class="pin-card">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAgElEQVR4nO3WsQ2AMAwF0S8eAhbACCyDxAoZgREYgREYgRGQQAoK8kUiUtL8+0pX/u9eEgAA8KX6Im/lqTuKK/mXLgAA2t4/0o0uAIBeylv5UnclANAt+Sl/6H65AwA4kec5cuoAuB8BH/0i4AMA7HMAAAAAAOBHjwAAHqoROwAAAABJRU5ErkJggg==" style="width:64px;height:64px;border-radius:12px;margin-bottom:16px" alt="Gramlin">
+    <h2>Gramlingo</h2>
+    <p style="color:var(--dim);font-size:14px;margin:8px 0 20px">Enter access pin</p>
+    <input type="password" id="pin-input" placeholder="pin" style="width:160px;padding:10px 14px;border:2px solid var(--opt-border);border-radius:var(--radius);font-size:18px;text-align:center;background:var(--opt-bg);color:var(--text);outline:none" onkeydown="if(event.key==='Enter')unlockGame()">
+    <button class="btn btn-primary" onclick="unlockGame()" style="margin-top:12px">Unlock</button>
+    <p id="pin-error" style="color:var(--red);font-size:12px;margin-top:8px;display:none">Wrong pin. Try again.</p>
+  </div>
+</div>
+
+<div id="nav-wrap">
 <nav>
   <div class="inner">
     <a href="#" class="logo" onclick="showHome();return false"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAgElEQVR4nO3WsQ2AMAwF0S8eAhbACCyDxAoZgREYgREYgRGQQAoK8kUiUtL8+0pX/u9eEgAA8KX6Im/lqTuKK/mXLgAA2t4/0o0uAIBeylv5UnclANAt+Sl/6H65AwA4kec5cuoAuB8BH/0i4AMA7HMAAAAAAOBHjwAAHqoROwAAAABJRU5ErkJggg==" style="width:24px;height:24px;border-radius:6px;vertical-align:middle"></a>
@@ -223,6 +240,7 @@ a:focus-visible,button:focus-visible,.opt:focus-visible,.phase-card:focus-visibl
     </div>
   </div>
 </nav>
+</div>
 
 <button class="back-btn" id="backBtn" onclick="showHome()" aria-label="返回首页">←</button>
 
@@ -241,6 +259,29 @@ function setStyle(v){
   document.getElementById('styleSwitcher').value = saved;
   document.documentElement.setAttribute('data-style',saved);
 })();
+
+// ==================== PIN / CSV LOADER ====================
+async function unlockGame(){
+  var pin=document.getElementById('pin-input').value.trim().toLowerCase();
+  if(pin!=='gramlin'&&pin!=='1234'){document.getElementById('pin-error').style.display='block';return}
+  document.getElementById('pin-screen').style.display='none';
+  document.getElementById('nav-wrap').style.display='block';
+  try{
+    var r=await fetch('https://raw.githubusercontent.com/lareesahu/gramlingo/main/questions.csv');
+    var csv=await r.text();
+    var lines=csv.trim().split('\n');lines.shift();
+    DATA={title:'Gramlingo',phases:[]};
+    var cur=null;
+    for(var i=0;i<lines.length;i++){
+      var cols=lines[i].split(',');while(cols.length<9)cols.push('');
+      var pid=cols[0],pname=cols[1],psub=cols[2],pdesc=cols[3],qn=parseInt(cols[4]),qtext=cols[5],a=cols[6],opts=cols[7].split('|||'),tip=cols[8];
+      if(!cur||cur.id!==pid){cur={id:pid,name:pname,s:psub,d:pdesc,q:[]};DATA.phases.push(cur)}
+      cur.q.push({q:qtext,a:a.includes('|||')?a.split('|||'):a,o:opts,t:tip});
+    }
+    render();
+  }catch(e){alert('Failed to load questions. Check connection.');console.error(e)}
+}
+document.getElementById('nav-wrap').style.display='none';
 
 // ==================== CURRICULUM DATA ====================
 const DATA = {title:'Gramlingo',phases:[

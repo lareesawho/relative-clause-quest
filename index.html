@@ -309,18 +309,18 @@ async function unlockGame(){
       localStorage.setItem('gram_csv',csv2);
     }catch(e2){
       var cached=localStorage.getItem('gram_csv');
-      if(cached){DATA=buildCSVData(cached);if(!validateData(DATA)){localStorage.removeItem('gram_csv');alert('Cached data corrupt. Please refresh.');_unlocking=false;return}}
-      else{alert('Could not load questions. Check your connection.');ps.innerHTML='<div class="pin-card"><h2>Gramlingo</h2><p style="color:var(--dim)">Failed to load.</p><button class="btn btn-primary" onclick="location.reload()">Retry</button></div>';_unlocking=false;return}
+      if(cached){try{DATA=buildCSVData(cached)}catch(e3){}if(!validateData(DATA))localStorage.removeItem('gram_csv')}
     }
   }
   ps.style.display='none';document.getElementById('nav-wrap').style.display='block';
+  refreshTotals();
   console.log('Gramlingo loaded:',DATA._p,'phases,',DATA._q,'questions');
   render();_unlocking=false;
 }
 document.getElementById('nav-wrap').style.display='none';
 
 // ==================== CURRICULUM DATA ====================
-let DATA = {title:'Gramlingo',phases:[
+let DATA = {title:'Gramlingo',_p:12,_q:82,phases:[
 {id:'rec',name:'识别定语从句',s:'你能找出定语从句吗？',d:'在句子中找出定语从句的部分',q:[
 {q:'下面哪个部分是定语从句？<br><em>The woman <u>who called me</u> is my manager.</em>',a:'who called me',o:['The woman','who called me','is my manager','my manager']},
 {q:'下面哪个部分是定语从句？<br><em>I read the book <u>that you recommended</u>.</em>',a:'that you recommended',o:['I read','the book','that you recommended','the book that']},
@@ -462,69 +462,147 @@ document.addEventListener('keydown',function(e){
 });
 
 // ==================== STATE ====================
-const S={active:null,idx:0,score:0,total:0,phaseQs:[],answered:false,sel:null,
+const S={active:null,activeModule:null,idx:0,score:0,total:0,phaseQs:[],answered:false,sel:null,
   progress:JSON.parse(localStorage.getItem('rcq4_prog')||'{}')};
 function save(){localStorage.setItem('rcq4_prog',JSON.stringify(S.progress))}
 function P_TOTAL(){let k={};for(let p of DATA.phases)k[p.id]=p.q.length;return k}
-const TOTALS=P_TOTAL();
+let TOTALS=P_TOTAL();
+function refreshTotals(){TOTALS=P_TOTAL()}
 
 function pctNeeded(total){return Math.ceil(total*0.7)}
 function isComplete(pid){let p=S.progress[pid];let need=pctNeeded(TOTALS[pid]);return p?p.score>=need:false}
 function isLocked(pid){
+  // Module-aware locking: use DATA.phaseLockOrder if available, else legacy hardcoded
+  let mod = (DATA.phaseLockOrder && DATA.modules) ? DATA.modules.find(m => 
+    DATA.phaseLockOrder[m.id] && DATA.phaseLockOrder[m.id].includes(pid)
+  ) : null;
+  if (mod && DATA.phaseLockOrder[mod.id]) {
+    let o = DATA.phaseLockOrder[mod.id];
+    let i = o.indexOf(pid);
+    if (i === 0 || i === -1) return false;
+    let prev = S.progress[o[i-1]] || {};
+    let need = pctNeeded(TOTALS[o[i-1]]);
+    return (prev.score || 0) < need;
+  }
+  // Legacy fallback
   let o=['rec','subj','obj','subobj','oblq','gen','rest','prod'];
-  let i=o.indexOf(pid);if(i===0)return false;
+  let i=o.indexOf(pid);if(i===0||i===-1)return false;
   let prev=S.progress[o[i-1]]||{};let need=pctNeeded(TOTALS[o[i-1]]);
   return (prev.score||0)<need;
 }
 
 function render(){document.getElementById('backBtn').style.display=S.active?'block':'none';S.active?renderPhase():renderHome()}
 
-// ==================== HOME ====================
+// ==================== HOME — Module Cards ====================
 function renderHome(){
   let app=document.getElementById('app'),tq=0,td=0,modStats={};
-  for(let p of DATA.phases){tq+=p.q.length;let b=S.progress[p.id]||{};td+=b.score||0;let mod=p.id.startsWith('prep_')?'prep':'clause';if(!modStats[mod])modStats[mod]={total:0,score:0,phases:0,complete:0};modStats[mod].total+=p.q.length;modStats[mod].score+=b.score||0;modStats[mod].phases++;if(isComplete(p.id))modStats[mod].complete++}
+  // Build module stats from DATA.modules if available, else from phase prefixes
+  let modules = DATA.modules || [
+    {id:'clauses',name:'Relative Clauses',nameZh:'定语从句',desc:'',descZh:'',icon:'🔍',gramlin:''},
+    {id:'prepositions',name:'Prepositions',nameZh:'介词',desc:'',descZh:'',icon:'📍',gramlin:''}
+  ];
+  for(let p of DATA.phases){tq+=p.q.length;let b=S.progress[p.id]||{};td+=b.score||0;let mod=p.module||(p.id.startsWith('prep_')?'prepositions':'clauses');if(!modStats[mod])modStats[mod]={total:0,score:0,phases:0,complete:0};modStats[mod].total+=p.q.length;modStats[mod].score+=b.score||0;modStats[mod].phases++;if(isComplete(p.id))modStats[mod].complete++}
   let pct=tq?Math.round(td/tq*100):0;
   let wk = loadWrong(); let wkCount = Object.keys(wk).length;
   let mascotUrl='https://raw.githubusercontent.com/lareesahu/grammar-game-ui-brainstorm/main/assets/gramlin-juggler.png';
+  
+  // Hero section
   let h=`<div class="section dark"><div class="inner" style="text-align:center">
     <h1>Gramlingo<span style="color:var(--blue)">.</span></h1>
     <img src="${mascotUrl}" style="width:96px;height:96px;border-radius:16px;margin:12px 0" alt="Gramlin" loading="lazy">
-    <p style="max-width:600px;margin:0 auto;font-size:15px">Grammar Quest — ${DATA.phases.length}个阶段，循序渐进。适合中国英语学习者的语法训练系统。</p>
-    <div class="mastery" style="gap:18px;flex-wrap:wrap"><span>${td}/${tq} 答对</span><span>${pct}%</span><span>📋 ${wkCount} 错题</span></div>
-  </div></div><div class="section light"><div class="inner">
-    <h2 style="color:var(--near)">定语从句 · Relative Clauses</h2>
-    <p style="margin:4px 0 12px;font-size:12px;color:var(--dim)">${modStats.clause.complete}/${modStats.clause.phases} 阶段完成 · ${modStats.clause.score}/${modStats.clause.total} 答对</p>
-    <div class="phase-grid">`;
-  for(let i=0;i<DATA.phases.length;i++){
-    let p=DATA.phases[i];if(p.id.startsWith('prep_'))continue;
-    let locked=isLocked(p.id),done=isComplete(p.id),pb=S.progress[p.id]||{},n=pb.score||0,need=pctNeeded(TOTALS[p.id]);
-    let s=done?'✓':locked?'🔒':'';
-    h+=`<button class="phase-card${locked?' locked':''}" onclick="${locked?'':`startPhase('${p.id}')`}" ${locked?'disabled':''} tabindex="${locked?'-1':'0'}" aria-label="${p.name}，${p.s}，${n}/${p.q.length}答对${locked?'，已锁定':''}">
-      <span class="status">${s}</span><span class="num">第${i+1}阶段</span><span class="name">${p.name}</span>
-      <div class="desc">${p.s} · ${p.q.length}题<br><span style="font-size:11px;color:var(--dim)">${n}/${p.q.length} 答对 ${done?'✓ 已完成':'(需≥'+need+'题)'}</span></div>
-      <span class="check">${done?'重做 →':locked?'已锁定':'开始 →'}</span>
-    </button>`;}
-  h+=`</div></div></div><div class="section light" style="background:var(--sect)"><div class="inner">
-    <h2 style="color:var(--near)">介词 · Prepositions</h2>
-    <p style="margin:4px 0 12px;font-size:12px;color:var(--dim)">${modStats.prep?modStats.prep.complete:0}/${modStats.prep?modStats.prep.phases:0} 阶段完成 · ${modStats.prep?modStats.prep.score:0}/${modStats.prep?modStats.prep.total:0} 答对</p>
-    <div class="phase-grid">`;
-  for(let i=0;i<DATA.phases.length;i++){
-    let p=DATA.phases[i];if(!p.id.startsWith('prep_'))continue;
-    let locked=isLocked(p.id),done=isComplete(p.id),pb=S.progress[p.id]||{},n=pb.score||0,need=pctNeeded(TOTALS[p.id]);
-    let s=done?'✓':locked?'🔒':'';
-    h+=`<button class="phase-card${locked?' locked':''}" onclick="${locked?'':`startPhase('${p.id}')`}" ${locked?'disabled':''} tabindex="${locked?'-1':'0'}" aria-label="${p.name}，${p.s}，${n}/${p.q.length}答对${locked?'，已锁定':''}">
-      <span class="status">${s}</span><span class="num">第${i+1}阶段</span><span class="name">${p.name}</span>
-      <div class="desc">${p.s} · ${p.q.length}题<br><span style="font-size:11px;color:var(--dim)">${n}/${p.q.length} 答对 ${done?'✓ 已完成':'(需≥'+need+'题)'}</span></div>
-      <span class="check">${done?'重做 →':locked?'已锁定':'开始 →'}</span>
-    </button>`;}
-  let wkBtn = wkCount ? `<button class="tool-btn" onclick="showWrongBank()" style="color:var(--red);font-weight:600">📋 错题集 (${wkCount})</button>` : '';
-  h+=`</div><div class="tool-row">
-    <button class="tool-btn" onclick="if(confirm('重置所有进度？')){S.progress={};save();render()}">🔄 重置进度</button>
-    <button class="tool-btn" onclick="exportProgress()">⬇️ 备份进度</button>
-    <button class="tool-btn" onclick="importProgress()">⬆️ 恢复进度</button>
+    <p style="max-width:600px;margin:0 auto;font-size:15px">Grammar Quest — ${DATA.phases.length}个阶段，${tq}道题。适合中国英语学习者的语法训练系统。</p>
+    <div class="mastery" style="gap:18px;flex-wrap:wrap"><span>${td}/${tq} ${_('mastery')}</span><span>${pct}%</span><span>📋 ${wkCount} ${_('wrong').replace('📋 ','')}</span></div>
+  </div></div>`;
+
+  // Module cards
+  h+=`<div class="section light"><div class="inner">
+    <h2 style="color:var(--near);margin-bottom:4px">${L==='zh'?'选择模块':'Choose a Module'}</h2>
+    <p style="margin:4px 0 20px;font-size:12px;color:var(--dim)">${L==='zh'?'点击模块进入学习旅程':'Click a module to start your learning journey'}</p>
+    <div class="phase-grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">`;
+  
+  for(let mod of modules){
+    let ms = modStats[mod.id] || {total:0,score:0,phases:0,complete:0};
+    let modPct = ms.total ? Math.round(ms.score/ms.total*100) : 0;
+    let gramlinImg = mod.gramlin || mascotUrl;
+    h+=`<button class="phase-card" onclick="renderModulePage('${mod.id}')" tabindex="0" aria-label="${mod.name}，${ms.complete}/${ms.phases}完成">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
+        <img src="${gramlinImg}" style="width:48px;height:48px;border-radius:12px;flex-shrink:0" alt="" loading="lazy">
+        <div>
+          <span class="name" style="display:block;font-size:18px">${mod.icon} ${L==='zh'&&mod.nameZh?mod.nameZh:mod.name}</span>
+          <span style="font-size:11px;color:var(--dim)">${ms.phases} ${L==='zh'?'个阶段':'phases'} · ${ms.score}/${ms.total} ${L==='zh'?'答对':'correct'}</span>
+        </div>
+      </div>
+      <div class="desc">${L==='zh'&&mod.descZh?mod.descZh:mod.desc}</div>
+      <div style="margin-top:10px;font-size:12px;color:var(--blue);font-weight:600">
+        ${modPct>=90&&ms.complete>=ms.phases?'✓ '+_('done'):ms.phases>0&&ms.complete>0?modPct+'% — '+_('start'):_('start')}
+      </div>
+    </button>`;
+  }
+  h+=`</div>`;
+
+  // Tools
+  let wkBtn = wkCount ? `<button class="tool-btn" onclick="showWrongBank()" style="color:var(--red);font-weight:600">📋 ${_('wrong').replace('📋 ','')} (${wkCount})</button>` : '';
+  h+=`<div class="tool-row">
+    <button class="tool-btn" onclick="if(confirm(_('reset_confirm'))){S.progress={};save();render()}">${_('reset')}</button>
+    <button class="tool-btn" onclick="exportProgress()">${_('backup')}</button>
+    <button class="tool-btn" onclick="importProgress()">${_('restore')}</button>
     ${wkBtn}
   </div></div></div>`;
   app.innerHTML=h;
+}
+
+// ==================== MODULE PAGE — Numbered Journey ====================
+function renderModulePage(mid){
+  let mod = (DATA.modules||[]).find(m=>m.id===mid);
+  if(!mod){
+    // Legacy: find phases by prefix match
+    mod = {id:mid, name:mid==='prepositions'?'Prepositions':'Relative Clauses', nameZh:mid==='prepositions'?'介词':'定语从句', gramlin:'', icon:mid==='prepositions'?'📍':'🔍'};
+  }
+  let phases = DATA.phases.filter(p=>(p.module||(p.id.startsWith('prep_')?'prepositions':'clauses'))===mid);
+  let modStats = {total:0,score:0,phases:phases.length,complete:0};
+  for(let p of phases){modStats.total+=p.q.length;let b=S.progress[p.id]||{};modStats.score+=b.score||0;if(isComplete(p.id))modStats.complete++}
+  let modPct = modStats.total?Math.round(modStats.score/modStats.total*100):0;
+  let mascotUrl='https://raw.githubusercontent.com/lareesahu/grammar-game-ui-brainstorm/main/assets/gramlin-juggler.png';
+  let gramlinImg = mod.gramlin || mascotUrl;
+
+  let app=document.getElementById('app');
+  let h=`<div class="section dark"><div class="inner" style="text-align:center">
+    <h1>${mod.icon} ${L==='zh'&&mod.nameZh?mod.nameZh:mod.name}<span style="color:var(--blue)">.</span></h1>
+    <img src="${gramlinImg}" style="width:80px;height:80px;border-radius:14px;margin:10px 0" alt="Gramlin" loading="lazy">
+    <p style="max-width:560px;margin:0 auto 12px;font-size:14px">${L==='zh'&&mod.descZh?mod.descZh:mod.desc||''}</p>
+    <div class="mastery" style="gap:18px;flex-wrap:wrap"><span>${modStats.score}/${modStats.total} ${_('mastery')}</span><span>${modPct}%</span><span>${modStats.complete}/${modStats.phases} ${_('done')}</span></div>
+  </div></div>
+  <div class="section light"><div class="inner">
+    <div style="font-size:12px;color:var(--dim);margin-bottom:4px">${L==='zh'?'每个阶段正确率≥70%解锁下一阶段':'Score ≥70% per phase to unlock the next'}</div>
+    <div class="phase-grid">`;
+  
+  let orderedPhases = [];
+  if(DATA.phaseLockOrder && DATA.phaseLockOrder[mid]){
+    for(let pid of DATA.phaseLockOrder[mid]){
+      let p = phases.find(ph=>ph.id===pid);
+      if(p) orderedPhases.push(p);
+    }
+  } else {
+    orderedPhases = phases;
+  }
+  
+  for(let i=0;i<orderedPhases.length;i++){
+    let p=orderedPhases[i];
+    let locked=isLocked(p.id),done=isComplete(p.id),pb=S.progress[p.id]||{},n=pb.score||0,need=pctNeeded(TOTALS[p.id]);
+    let s=done?'✓':locked?'🔒':'';
+    h+=`<button class="phase-card${locked?' locked':''}" onclick="${locked?'':`startPhase('${p.id}')`}" ${locked?'disabled':''} tabindex="${locked?'-1':'0'}" aria-label="${p.name}，${n}/${p.q.length}${L==='zh'?'答对':'correct'}${locked?','+_('locked'):''}">
+      <span class="status">${s}</span><span class="num">${L==='zh'?'第':'Phase'} ${i+1}</span><span class="name">${p.name}</span>
+      <div class="desc">${p.s} · ${p.q.length} ${_('questions')}<br><span style="font-size:11px;color:var(--dim)">${n}/${p.q.length} ${_('mastery')} ${done?'✓ '+_('done'):'('+_('need')+need+')'}</span></div>
+      <span class="check">${done?_('redo'):locked?_('locked'):_('start')}</span>
+    </button>`;
+  }
+  h+=`</div>
+    <div style="margin-top:32px;text-align:center">
+      <button class="btn btn-outline" onclick="showHome()">← ${_('home')}</button>
+    </div>
+  </div></div>`;
+  app.innerHTML=h;
+  document.getElementById('backBtn').style.display='block';
 }
 
 // ==================== EXPORT / IMPORT ====================
@@ -625,6 +703,9 @@ function retakeAll(){
 // ==================== PHASE PLAY ====================
 function startPhase(pid){
   S.active=pid;S.idx=0;S.score=0;S.total=0;S.answered=false;S.sel=null;
+  // Track which module this phase belongs to
+  let phase = DATA.phases.find(p=>p.id===pid);
+  S.activeModule = phase ? (phase.module || (pid.startsWith('prep_')?'prepositions':'clauses')) : null;
   S.phaseQs=shuffle([...DATA.phases.find(p=>p.id===pid).q]);render();
 }
 function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -868,7 +949,15 @@ function renderComplete(app,p,isWrongMode){
   }
   let prev=S.progress[S.active]||{score:0},need=pctNeeded(t);
   if(S.score>prev.score){S.progress[S.active]={score:S.score,total:t};save()}
-  let i=DATA.phases.indexOf(p),np=DATA.phases[i+1],all=DATA.phases.every(ph=>isComplete(ph.id));
+  // Find next phase within same module
+  let modId = S.activeModule || 'clauses';
+  let modPhases = DATA.phaseLockOrder && DATA.phaseLockOrder[modId] ? DATA.phaseLockOrder[modId] : 
+    DATA.phases.filter(ph=>(ph.module||(ph.id.startsWith('prep_')?'prepositions':'clauses'))===modId).map(ph=>ph.id);
+  let curIdx = modPhases.indexOf(S.active);
+  let nextPid = curIdx >= 0 && curIdx < modPhases.length - 1 ? modPhases[curIdx + 1] : null;
+  let np = nextPid ? DATA.phases.find(ph=>ph.id===nextPid) : null;
+  // Check if all phases in this module complete
+  let modAllDone = modPhases.every(pid=>isComplete(pid));
   let unlocked=S.score>=need;
   let h=`<div class="section dark"><div class="inner" style="text-align:center">
     <div style="font-size:64px;margin-bottom:16px">${stars>=3?'🏆':stars>=2?'🎉':stars>=1?'👍':'💪'}</div>
@@ -879,15 +968,29 @@ function renderComplete(app,p,isWrongMode){
   else if(!unlocked) h+=`<p style="color:rgba(255,255,255,.5)">需要≥${need}/${t}题正确（${Math.ceil(need/t*100)}%）才能解锁下一阶段，再练一次！</p>`;
   else if(unlocked&&pct<90) h+=`<p style="color:rgba(255,255,255,.5)">很好！准备进入下一阶段了吗？</p>`;
   else h+=`<p style="color:rgba(255,255,255,.5)">太棒了！完美通关！</p>`;
-  h+=`<div class="btn-row" style="margin-top:24px"><button class="btn btn-outline" onclick="showHome()">← 全部阶段</button><button class="btn btn-primary" onclick="startPhase('${p.id}')">↻ 重做</button>`;
+  h+=`<div class="btn-row" style="margin-top:24px"><button class="btn btn-outline" onclick="renderModulePage('${modId}')">← ${L==='zh'?'返回模块':'Module'}</button><button class="btn btn-primary" onclick="startPhase('${p.id}')">↻ ${L==='zh'?'重做':'Retry'}</button>`;
   if(np&&!isLocked(np.id)) h+=`<button class="btn btn-primary" style="background:var(--green)" onclick="startPhase('${np.id}')">${np.name} →</button>`;
   else if(np&&isLocked(np.id)) h+=`<button class="btn btn-primary" disabled style="opacity:.4">🔒 ${np.name} (需≥${pctNeeded(TOTALS[np.id])}题)</button>`;
-  if(all) h+=`<p style="margin-top:24px;color:var(--green);font-size:17px;font-weight:600">🎉 全部8个阶段完成！你已经掌握了定语从句！</p>`;
+  if(modAllDone) h+=`<p style="margin-top:24px;color:var(--green);font-size:17px;font-weight:600">🎉 ${L==='zh'?'本模块全部阶段完成！':'All phases in this module complete!'}</p>`;
   h+=`</div></div></div>`; app.innerHTML=h;
 }
 
-function showHome(){S.active=null;render()}
+function showHome(){S.active=null;S.activeModule=null;render()}
 function announce(msg){let el=document.getElementById('announce');if(el){el.textContent='';setTimeout(()=>{el.textContent=msg},50)}}
+
+// Back button: return to module page if in a module, else home
+document.getElementById('backBtn').addEventListener('click',function(){
+  if(S.activeModule && !S.active){
+    // On module page, go back to home
+    showHome();
+  } else if(S.active && S.activeModule){
+    // In a phase, go back to module page
+    renderModulePage(S.activeModule);
+    S.active=null;
+  } else {
+    showHome();
+  }
+});
 render();
 </script>
 </body>

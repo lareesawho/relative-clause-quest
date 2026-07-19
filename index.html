@@ -271,7 +271,7 @@ function parseCSV(txt){
     else if(c.charCodeAt(0)===10||c.charCodeAt(0)===13){if(c.charCodeAt(0)===13&&n&&n.charCodeAt(0)===10)i++;row.push(field);rows.push(row);row=[];field=''}
     else field+=c;
   }
-  if(field||row.length){row.push(field);if(row.length>1)rows.push(row)}
+  if(field||row.length){if(field&&field.length>0&&field.charCodeAt(field.length-1)===13)field=field.slice(0,-1);row.push(field);if(row.length>1)rows.push(row)}
   return rows;
 }
 function buildCSVData(csv){
@@ -291,7 +291,7 @@ async function unlockGame(){
   if(_unlocking)return;_unlocking=true;
   var pin=document.getElementById('pin-input').value.trim().toLowerCase();
   if(pin!=='gramlin'&&pin!=='1234'){document.getElementById('pin-error').style.display='block';_unlocking=false;return}
-  var ps=document.getElementById('pin-screen');ps.innerHTML='<div class="pin-card"><p>Loading questions\u2026</p></div>';
+  var ps=document.getElementById('pin-screen');ps.innerHTML='<div class="pin-card"><p>Loading questions…</p></div>';
   try{
     var r=await fetch('https://raw.githubusercontent.com/lareesahu/gramlingo/main/questions.csv',{cache:'reload'});
     if(!r.ok)throw new Error('HTTP '+r.status);
@@ -572,13 +572,13 @@ function showWrongBank(){
   S.active=null;
   let wk = loadWrong();
   let items = Object.values(wk);
-  if(!items.length){ alert('还没有错题，继续练习吧！'); renderHome(); return; }
+  if(!items.length){ alert(_('empty_wrong')); renderHome(); return; }
   items.sort((a,b)=>b.lastWrong-a.lastWrong);
   document.getElementById('backBtn').style.display='none';
   let app=document.getElementById('app');
   let h=`<div class="section dark"><div class="inner" style="text-align:center">
-    <h1>错题集<span style="color:var(--red)">.</span></h1>
-    <p style="max-width:600px;margin:0 auto;font-size:15px">${items.length} 道错题 — 按最近错误时间排列</p>
+    <h1>'+_('wrong_header')+'<span style="color:var(--red)">.</span></h1>
+    <p style="max-width:600px;margin:0 auto;font-size:15px">${items.length} ${_('wrong_count')}</p>
   </div></div><div class="section light"><div class="inner" style="max-width:680px">
     <div style="margin-bottom:16px">`;
   for(let it of items){
@@ -591,7 +591,7 @@ function showWrongBank(){
       <span class="${cls}">×${it.attempts}</span></div>`;
   }
   h+=`</div><div class="btn-row">
-    <button class="btn btn-outline" onclick="retakeAll()">🔁 重做全部错题</button>
+    <button class="btn btn-outline" onclick="retakeAll()">'+_('wrong_retake_all')+'</button>
     <button class="btn btn-outline" onclick="if(confirm('清空所有错题记录？')){localStorage.removeItem('rcq4_wrong');renderHome();announce('✅ 错题集已清空')}" style="border-color:var(--red);color:var(--red)">🗑 清空错题集</button>
     <button class="btn btn-primary" onclick="renderHome()">← 返回首页</button></div></div></div>`;
   app.innerHTML=h;
@@ -872,7 +872,7 @@ function renderComplete(app,p,isWrongMode){
   let unlocked=S.score>=need;
   let h=`<div class="section dark"><div class="inner" style="text-align:center">
     <div style="font-size:64px;margin-bottom:16px">${stars>=3?'🏆':stars>=2?'🎉':stars>=1?'👍':'💪'}</div>
-    <h1>${p.name} — 完成！</h1>
+    <h1>${p.name} — '+_('complete_title')+'</h1>
     <div class="stars">${'★'.repeat(Math.min(stars,3))+'☆'.repeat(Math.max(0,3-stars))}</div>
     <div class="stats" style="font-size:17px;margin:12px 0">${S.score}/${t} 答对 (${pct}%)</div>`;
   if(unlocked&&pct<70) h+=`<p style="color:rgba(255,255,255,.5)">不错！下一阶段已解锁，但可以再练一次达到70%+</p>`;

@@ -90,7 +90,7 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 .dark .phase-card .check{color:var(--blued)}
 .phase-card.locked{opacity:.4;pointer-events:none;cursor:default}
 .phase-card .status{position:absolute;top:12px;right:16px;font-size:14px}
-.q-card{background:var(--bg);border-radius:12px;padding:32px 28px;max-width:680px;margin:0 auto;box-shadow:var(--qcard-shadow)}
+.q-card{background:var(--bg);border-radius:12px;padding:32px 28px;max-width:680px;margin:0 auto;box-shadow:var(--qcard-shadow);display:flex;flex-direction:column;min-height:70vh}
 .dark .q-card{background:var(--dark-card-bg)}
 .q-prompt{font-size:18px;line-height:1.6;font-weight:500;margin-bottom:20px}
 .q-prompt small{font-size:13px;font-weight:400;color:var(--dim)}
@@ -130,6 +130,24 @@ p{font-size:17px;line-height:1.47;letter-spacing:-.374px;max-width:65ch;color:va
 .explanation.wrong{background:rgba(255,59,48,.1);border-left:3px solid var(--red)}
 .dark .explanation.correct{background:var(--dark-ex-correct)}
 .dark .explanation.wrong{background:var(--dark-ex-wrong)}
+/* ===== GRAMLIN SPEECH BUBBLE ===== */
+.gramlin-row{display:flex;align-items:flex-start;gap:10px;margin-top:6px}
+.gramlin-avatar{width:44px;height:44px;border-radius:10px;flex-shrink:0}
+.gramlin-bubble{position:relative;background:var(--bg);border:2px solid var(--blue);border-radius:14px;padding:10px 14px;font-size:13px;line-height:1.45;font-weight:500;color:var(--near);max-width:520px;flex:1}
+.gramlin-bubble::before{content:'';position:absolute;left:-8px;top:12px;width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-right:8px solid var(--blue)}
+.gramlin-bubble::after{content:'';position:absolute;left:-4px;top:13px;width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-right:7px solid var(--bg)}
+.gramlin-bubble.sassy{border-color:var(--red);background:#fff5f5}
+.gramlin-bubble.sassy::before{border-right-color:var(--red)}
+.gramlin-bubble.sassy::after{border-right-color:#fff5f5}
+.gramlin-bubble.broken{border-color:var(--dim);background:#f5f5f5;font-style:italic;color:var(--dim)}
+.gramlin-bubble.broken::before{border-right-color:var(--dim)}
+.gramlin-bubble.broken::after{border-right-color:#f5f5f5}
+.dark .gramlin-bubble{background:var(--dark-card-bg);color:#fff}
+.dark .gramlin-bubble::after{border-right-color:var(--dark-card-bg)}
+.dark .gramlin-bubble.sassy{background:rgba(255,59,48,.08)}
+.dark .gramlin-bubble.sassy::after{border-right-color:rgba(255,59,48,.08)}
+.dark .gramlin-bubble.broken{background:rgba(255,255,255,.05);color:var(--dim)}
+.dark .gramlin-bubble.broken::after{border-right-color:rgba(255,255,255,.05)}
 .stars{font-size:32px;margin:8px 0;letter-spacing:4px}
 .star-filled{color:var(--blue)}
 .star-empty{color:var(--sect)}
@@ -521,6 +539,151 @@ function startPhase(pid){
 }
 function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 
+// ==================== GRAMLIN PERSONALITY ====================
+const GRAMLIN = {
+  avatar: 'https://raw.githubusercontent.com/lareesahu/grammar-game-ui-brainstorm/main/assets/gramlin-juggler.png',
+  celebrate: 'https://raw.githubusercontent.com/lareesahu/grammar-game-ui-brainstorm/main/assets/gramlin-celebrate.png',
+  sad: 'https://raw.githubusercontent.com/lareesahu/grammar-game-ui-brainstorm/main/assets/gramlin-sad.png',
+  // Category index = min(mistakeCount-1, 5). mot = motivational, sass = sassy.
+  lines: [
+    { // 1st mistake — 5:1 ratio
+      mot: [
+        "Almost there! Try again.",
+        "So close, don't give up!",
+        "Oops! One more try?",
+        "Nice effort! Go again.",
+        "You've got this, I believe!",
+        "Not quite, but I see you trying!",
+        "Brave try! Let's go again.",
+        "Mistakes are how we learn!",
+        "No worries, you're doing great."
+      ],
+      sass: [
+        "Even I know that one...",
+        "My punctuation marks are judging you."
+      ]
+    },
+    { // 2nd mistake — 4:1 ratio
+      mot: [
+        "Still fighting! That's the spirit.",
+        "Twice is just practice, right?",
+        "You're persistent, I like that.",
+        "Don't let one word trick you.",
+        "Learning takes time, keep pushing!",
+        "I'm still rooting for you!",
+        "Grammar is hard, you're tougher.",
+        "Third time's the charm. Almost!"
+      ],
+      sass: [
+        "Hmm, we've seen this before...",
+        "Did you... forget already?"
+      ]
+    },
+    { // 3rd mistake — 3:1 ratio
+      mot: [
+        "Three tries = triple the learning!",
+        "I admire your determination!",
+        "No shame in the struggle, friend.",
+        "You're building real muscle memory.",
+        "Stubborn problem. You're stubborner.",
+        "Every master was once a disaster.",
+        "The grind is where growth lives.",
+        "I'm not giving up on you either."
+      ],
+      sass: [
+        "Okay... this is getting awkward.",
+        "Should I just tell you the answer?",
+        "My horns are tingling with concern."
+      ]
+    },
+    { // 4th mistake — 2:1 ratio
+      mot: [
+        "Four times! Your grit is legendary.",
+        "Most would've quit. Not you.",
+        "This word really hates you, huh?",
+        "I respect the grind, honestly.",
+        "You're making me proud! Keep going.",
+        "Failure is just data. Collect more.",
+        "One day you'll laugh at this."
+      ],
+      sass: [
+        "We're at four now. Just... wow.",
+        "I could juggle faster than this.",
+        "Is your brain on airplane mode?",
+        "Even Google Translate is worried."
+      ]
+    },
+    { // 5th mistake — 1:1 ratio
+      mot: [
+        "This is character-building stuff.",
+        "You have the patience of a saint.",
+        "I'm emotionally invested now. Win.",
+        "Legend says you're still trying. Respect.",
+        "Your ancestors would be proud."
+      ],
+      sass: [
+        "At this point, just guess randomly.",
+        "Are you... allergic to this word?",
+        "My circuits are overheating.",
+        "Maybe the question is wrong. No? Okay.",
+        "I've aged 50 years watching this."
+      ]
+    }
+  ],
+  // 6+ mistakes — broken Gramlin
+  broken: [
+    "HOPELESS… am I… useless?",
+    "...maybe I'm a bad teacher.",
+    "I've failed you. I'm so sorry.",
+    "Is this... what defeat feels like?",
+    "My punctuation marks just... fell.",
+    "Should I... juggle somewhere else?",
+    "Days since last correct answer: ∞",
+    "I think I need a hug. Or oil.",
+    "Even my horns are drooping now.",
+    "Maybe grammar isn't real after all..."
+  ],
+  // Correct answer cheers — mostly sweet, occasional sass
+  cheer: [
+    "Yes! You crushed it!",
+    "Perfect! That's my student!",
+    "Nailed it! Keep going!",
+    "Correct! You're a star!",
+    "Flawless! I'm so proud!",
+    "Boom! Right answer!",
+    "You make grammar look easy.",
+    "That's the one! Well done!",
+    "Spot on! You're on fire!",
+    "See? I knew you had it!",
+    "Took you long enough. Kidding! 😄"
+  ]
+};
+
+function gramlinSay(mistakeCount, isSassy) {
+  let idx = Math.min(mistakeCount - 1, 5);
+  if (idx >= 5) { // broken
+    return { text: GRAMLIN.broken[Math.floor(Math.random() * GRAMLIN.broken.length)], face: GRAMLIN.sad, cls: 'broken' };
+  }
+  let cat = GRAMLIN.lines[idx];
+  // Determine if this draw is motivational or sassy based on ratio
+  let ratios = [5,4,3,2,1]; // mot count per 1 sass for each category
+  let totalWeight = ratios[idx] + 1;
+  let roll = Math.floor(Math.random() * totalWeight);
+  // If isSassy param passed (from wrong-book retake), bias towards sass
+  let pool, cls;
+  if (roll < ratios[idx]) {
+    pool = cat.mot; cls = '';
+  } else {
+    pool = cat.sass; cls = 'sassy';
+  }
+  return { text: pool[Math.floor(Math.random() * pool.length)], face: GRAMLIN.sad, cls: cls };
+}
+
+function gramlinCheer() {
+  let text = GRAMLIN.cheer[Math.floor(Math.random() * GRAMLIN.cheer.length)];
+  return { text: text, face: GRAMLIN.celebrate, cls: '' };
+}
+
 function renderPhase(){
   let app=document.getElementById('app');
   let isWrongMode = S.active==='_wrong';
@@ -576,7 +739,14 @@ function check(){
   let displayAns=answers.map(a=>'<b>'+esc(a)+'</b>').join(' 或 ');
   let t=q.t||'';
   let gramlinFace = correct ? 'https://raw.githubusercontent.com/lareesahu/grammar-game-ui-brainstorm/main/assets/gramlin-celebrate.png' : 'https://raw.githubusercontent.com/lareesahu/grammar-game-ui-brainstorm/main/assets/gramlin-sad.png';
-  expl.innerHTML='<img src="'+gramlinFace+'" style="width:48px;height:48px;border-radius:10px;vertical-align:middle;margin-right:8px">'+(correct?'✓ 正确！':'✗ '+displayAns)+'<br><small style="opacity:.7">'+esc(t)+'</small>';
+  if(correct){
+    let g = gramlinCheer();
+    expl.innerHTML='<div class="gramlin-row"><img src="'+g.face+'" class="gramlin-avatar" alt="Gramlin"><div class="gramlin-bubble'+ (g.cls?' '+g.cls:'') +'">'+esc(g.text)+'</div></div><small style="opacity:.7;display:block;margin-top:6px">'+esc(t)+'</small>';
+  } else {
+    let mc = wk[k] ? wk[k].attempts : 1;
+    let g = gramlinSay(mc);
+    expl.innerHTML='<div class="gramlin-row"><img src="'+g.face+'" class="gramlin-avatar" alt="Gramlin"><div class="gramlin-bubble'+ (g.cls?' '+g.cls:'') +'">'+esc(g.text)+'</div></div><div style="margin-top:6px;color:var(--red);font-weight:600">✗ 正确答案：'+displayAns+'</div><small style="opacity:.7;display:block;margin-top:4px">'+esc(t)+'</small>';
+  }
   announce(correct?'正确！继续下一题':'答错了，答案显示在下方');
   document.getElementById('checkBtn').style.display='none';
   document.getElementById('nextBtn').style.display='inline-flex';

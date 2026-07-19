@@ -316,6 +316,7 @@ function loginUser(){
   if(users.indexOf(user)===-1){users.push(user);localStorage.setItem('gram_users',JSON.stringify(users))}
   
   CUR_USER = user;
+  L = localStorage.getItem(pfx('lang')) || 'zh';
   localStorage.setItem('gram_last_user', user);
   document.getElementById('nav-user').textContent = '👤 '+user;
   loadGameData();

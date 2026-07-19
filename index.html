@@ -273,34 +273,52 @@ let CUR_USER = null;
 function loginUser(){
   let user = document.getElementById('login-user').value.trim().toLowerCase();
   let pin  = document.getElementById('login-pin').value.trim();
-  if(!user || user.length<2){document.getElementById('pin-error').style.display='block';document.getElementById('pin-error').textContent='Name must be at least 2 characters';return}
+  let err  = document.getElementById('pin-error');
+  if(!user || user.length<2){err.style.display='block';err.textContent='Name must be at least 2 characters';return}
+
+  // === ADMIN ROUTE ===
+  if(user==='admin'){
+    if(pin!=='gramlin'){err.style.display='block';err.textContent='Wrong admin pin';return}
+    CUR_USER = 'admin';
+    localStorage.setItem('gram_last_user','admin');
+    document.getElementById('nav-user').textContent = '👤 admin';
+    document.getElementById('pin-screen').style.display='none';
+    document.getElementById('nav-wrap').style.display='block';
+    // Load DATA minimally for TOTALS
+    var c=localStorage.getItem('gram_admin_csv')||localStorage.getItem('gram_csv');
+    if(c){try{DATA=buildCSVData(c);refreshTotals()}catch(e){}}
+    renderAdminPanel();
+    return;
+  }
+  // === LOCK CHECK ===
+  if(localStorage.getItem('gram_'+user+'_locked')==='true'){
+    err.style.display='block';err.textContent='⛔ Account locked. Contact admin.';return;
+  }
   
-  // Check if user exists
   let storedPin = localStorage.getItem('gram_'+user+'_pin');
-  
   if(storedPin === null){
-    // New user — register
     localStorage.setItem('gram_'+user+'_pin', pin || '');
     localStorage.setItem('gram_'+user+'_created', Date.now().toString());
   } else {
-    // Returning user — verify pin
     if(storedPin !== pin){
-      document.getElementById('pin-error').style.display='block';
-      document.getElementById('pin-error').textContent='Wrong pin for '+user+'. Try again.';
-      return;
+      err.style.display='block';err.textContent='Wrong pin for '+user+'. Try again.';return;
     }
   }
   
-  // Track users list
   let users = JSON.parse(localStorage.getItem('gram_users')||'[]');
   if(users.indexOf(user)===-1){users.push(user);localStorage.setItem('gram_users',JSON.stringify(users))}
   
   CUR_USER = user;
   localStorage.setItem('gram_last_user', user);
   document.getElementById('nav-user').textContent = '👤 '+user;
-  
-  // Load CSV + boot game
   loadGameData();
+}
+
+function toggleUserLock(user){
+  let key = 'gram_'+user+'_locked';
+  if(localStorage.getItem(key)==='true'){localStorage.removeItem(key)}
+  else{localStorage.setItem(key,'true')}
+  renderAdminPanel();
 }
 
 function switchUser(){
@@ -313,18 +331,47 @@ function switchUser(){
   document.getElementById('pin-error').style.display='none';
 }
 
-// List all users for admin view
-function listUsers(){
+// ==================== ADMIN PANEL ====================
+function renderAdminPanel(){
   let users = JSON.parse(localStorage.getItem('gram_users')||'[]');
-  let lines = [];
+  if(users.indexOf('admin')===-1){users.push('admin');localStorage.setItem('gram_users',JSON.stringify(users))}
+  let rows = '';
   for(let u of users){
+    if(u==='admin')continue;
+    let locked = localStorage.getItem('gram_'+u+'_locked')==='true';
     let p = JSON.parse(localStorage.getItem('gram_'+u+'_prog')||'{}');
-    let total = 0, score = 0;
-    for(let k in p){if(k!=='_exported'){let t=TOTALS[k]||0;total+=t;score+=p[k].score||0}}
+    let total=0,score=0,phases=0,complete=0;
+    for(let k in p){if(k!=='_exported'){let t=TOTALS[k]||0;total+=t;score+=p[k].score||0;phases++;if(p[k].score>=Math.ceil(t*0.7))complete++}}
     let pct = total?Math.round(score/total*100):0;
-    lines.push(u+': '+score+'/'+total+' ('+pct+'%)');
+    let status = locked?'<span style="color:var(--red)">🔒 Locked</span>':'<span style="color:var(--green)">✅ Active</span>';
+    let barW = pct+'%';
+    rows+=`<tr>
+      <td style="font-weight:600">${u}</td>
+      <td>${status}</td>
+      <td><div style="background:var(--sect);border-radius:4px;height:8px;width:100px"><div style="background:var(--blue);border-radius:4px;height:8px;width:${barW}"></div></div></td>
+      <td style="font-size:12px">${score}/${total} (${pct}%)</td>
+      <td style="font-size:12px">${complete}/${phases} phases</td>
+      <td><button class="btn" style="font-size:11px;padding:4px 10px;min-height:28px;background:${locked?'var(--green)':'var(--red)'};color:#fff" onclick="toggleUserLock('${u}')">${locked?'Unlock':'Lock'}</button></td>
+    </tr>`;
   }
-  return lines.length?lines.join('\n'):'No users yet';
+  let h=`<div class="section dark"><div class="inner" style="text-align:center">
+    <h1>Admin<span style="color:var(--blue)">.</span></h1>
+    <p style="font-size:14px;margin:4px auto;color:rgba(255,255,255,.6)">${users.length-1} users registered</p>
+  </div></div>
+  <div class="section light"><div class="inner" style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:14px">
+      <thead><tr style="border-bottom:2px solid var(--sect);text-align:left">
+        <th style="padding:10px 8px">User</th><th style="padding:10px 8px">Status</th>
+        <th style="padding:10px 8px">Progress</th><th style="padding:10px 8px">Score</th>
+        <th style="padding:10px 8px">Phases</th><th style="padding:10px 8px">Action</th>
+      </tr></thead><tbody>${rows||'<tr><td colspan="6" style="padding:20px;text-align:center;color:var(--dim)">No users yet</td></tr>'}</tbody>
+    </table>
+    <div style="margin-top:24px;text-align:center">
+      <button class="btn btn-outline" onclick="switchUser()">← Logout</button>
+      <button class="btn btn-outline" onclick="if(confirm('Export all user data?')){let d={};let us=JSON.parse(localStorage.getItem('gram_users')||'[]');for(let u of us){d[u]={prog:JSON.parse(localStorage.getItem('gram_'+u+'_prog')||'{}'),wrong:JSON.parse(localStorage.getItem('gram_'+u+'_wrong')||'{}'),locked:localStorage.getItem('gram_'+u+'_locked')||''}};let b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='gramlingo_users_backup.json';a.click()}\">⬇ Export All</button>
+    </div>
+  </div></div>`;
+  document.getElementById('app').innerHTML=h;
 }
 
 // ==================== CSV LOADER ====================

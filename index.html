@@ -411,6 +411,19 @@ es:{check:'Verificar',next:'Siguiente →',back:'← Inicio',reset:'🔄 Reinici
 };
 function setLang(v){L=v;localStorage.setItem('gram_lang',v);document.getElementById('langSwitcher').value=v;render();}
 function _(k){return (T[L]||T.zh)[k]||k}
+// Extended i18n keys (appended for wrong-book, completion)
+T.zh.reset_confirm='重置所有进度？';T.zh.wrong_header='错题集';T.zh.wrong_count='道错题 — 按最近错误时间排列';T.zh.wrong_retake_all='🔁 重做全部错题';T.zh.wrong_clear='🗑 清空错题集';T.zh.wrong_correct='正确答案';T.zh.empty_wrong='还没有错题，继续练习吧！';T.zh.complete_title='完成！';T.zh.complete_wrong='错题复习 — 完成！';T.zh.perfect='🎉 完美！';T.zh.great='👍 不错！';T.zh.ok='💪 继续加油！';T.zh.keep_going='继续加油，回到错题集再练一次。';T.zh.stage_done='阶段';T.zh.back_wrong='← 返回错题集';T.zh.retry_label='重做';T.zh.unlock_new='✨ 新阶段已解锁！';T.zh.phase_hint='每阶段正确回答70%+即可解锁下一阶段';
+T.en.reset_confirm='Reset all progress?';T.en.wrong_header='Wrong Book';T.en.wrong_count='wrong questions — sorted by most recent';T.en.wrong_retake_all='🔁 Retake All';T.en.wrong_clear='🗑 Clear All';T.en.wrong_correct='Correct answer';T.en.empty_wrong='No wrong questions yet. Keep practicing!';T.en.complete_title='Complete!';T.en.complete_wrong='Wrong Book Review — Complete!';T.en.perfect='🎉 Perfect!';T.en.great='👍 Great!';T.en.ok='💪 Keep going!';T.en.keep_going='Keep practicing — try the wrong book once more.';T.en.stage_done='Stage';T.en.back_wrong='← Back to Wrong Book';T.en.retry_label='Retry';T.en.unlock_new='✨ New phase unlocked!';T.en.phase_hint='Score 70%+ to unlock the next phase';
+T.es.reset_confirm='¿Reiniciar todo?';T.es.wrong_header='Libro de Errores';T.es.wrong_count='errores — más recientes primero';T.es.wrong_retake_all='🔁 Reintentar Todo';T.es.wrong_clear='🗑 Borrar Todo';T.es.wrong_correct='Respuesta correcta';T.es.empty_wrong='¡Aún no hay errores. Sigue practicando!';T.es.complete_title='¡Completado!';T.es.complete_wrong='Repaso de Errores — ¡Completado!';T.es.perfect='🎉 ¡Perfecto!';T.es.great='👍 ¡Genial!';T.es.ok='💪 ¡Sigue!';T.es.keep_going='Sigue practicando — vuelve al libro de errores.';T.es.stage_done='Fase';T.es.back_wrong='← Volver';T.es.retry_label='Reintentar';T.es.unlock_new='✨ ¡Nueva fase desbloqueada!';T.es.phase_hint='Responde 70%+ correcto para desbloquear la siguiente fase';
+
+// Keyboard shortcuts
+document.addEventListener('keydown',function(e){
+  if(document.activeElement.tagName==='INPUT')return;
+  if(e.key==='Enter'){
+    if(S.active&&!S.answered){var cb=document.getElementById('checkBtn');if(cb&&!cb.disabled)check()}
+    else if(S.answered){next()}
+  }
+});
 
 // ==================== STATE ====================
 const S={active:null,idx:0,score:0,total:0,phaseQs:[],answered:false,sel:null,

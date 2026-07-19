@@ -678,7 +678,7 @@ function exportProgress(){
   let blob=new Blob([data],{type:'application/json'});
   let url=URL.createObjectURL(blob);
   let a=document.createElement('a');
-  a.href=url;a.download='rcq4_backup.json';
+  a.href=url;a.download='gramlingo_backup.json';
   document.body.appendChild(a);a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);

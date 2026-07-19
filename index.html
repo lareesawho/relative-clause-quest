@@ -260,26 +260,50 @@ function setStyle(v){
   document.documentElement.setAttribute('data-style',saved);
 })();
 
-// ==================== PIN / CSV LOADER ====================
+// ==================== CSV LOADER (robust backend) ====================
+function parseCSV(txt){
+  var rows=[],row=[],field='',inQ=false;
+  for(var i=0;i<txt.length;i++){
+    var c=txt[i],n=txt[i+1];
+    if(inQ){if(c==='"'){if(n==='"'){field+='"';i++}else inQ=false}else field+=c}
+    else if(c==='"'){inQ=true}
+    else if(c===','){row.push(field);field=''}
+    else if(c==='\n'||c==='
+'){if(c==='
+'&&n==='\n')i++;row.push(field);rows.push(row);row=[];field=''}
+    else field+=c;
+  }
+  if(field||row.length){row.push(field);if(row.length>1)rows.push(row)}
+  return rows;
+}
+function buildCSVData(csv){
+  var rows=parseCSV(csv);rows.shift();var phases=[],cur=null;
+  for(var i=0;i<rows.length;i++){
+    var r=rows[i];while(r.length<9)r.push('');
+    var pid=r[0],pname=r[1],psub=r[2],pdesc=r[3],qtext=r[5],a=r[6],opts=r[7].split('|||'),tip=r[8]||'';
+    if(!cur||cur.id!==pid){cur={id:pid,name:pname,s:psub,d:pdesc,q:[]};phases.push(cur)}
+    cur.q.push({q:qtext,a:a.includes('|||')?a.split('|||'):a,o:opts,t:tip});
+  }
+  return {title:'Gramlingo',phases:phases};
+}
 async function unlockGame(){
   var pin=document.getElementById('pin-input').value.trim().toLowerCase();
   if(pin!=='gramlin'&&pin!=='1234'){document.getElementById('pin-error').style.display='block';return}
-  document.getElementById('pin-screen').style.display='none';
-  document.getElementById('nav-wrap').style.display='block';
+  var ps=document.getElementById('pin-screen');ps.innerHTML='<div class="pin-card"><p>Loading questions…</p></div>';
   try{
-    var r=await fetch('https://raw.githubusercontent.com/lareesahu/gramlingo/main/questions.csv');
+    var cache=localStorage.getItem('gram_csv'),ver=localStorage.getItem('gram_csv_v')||'';
+    var r=await fetch('https://raw.githubusercontent.com/lareesahu/gramlingo/main/questions.csv',{cache:'reload'});
     var csv=await r.text();
-    var lines=csv.trim().split('\n');lines.shift();
-    DATA={title:'Gramlingo',phases:[]};
-    var cur=null;
-    for(var i=0;i<lines.length;i++){
-      var cols=lines[i].split(',');while(cols.length<9)cols.push('');
-      var pid=cols[0],pname=cols[1],psub=cols[2],pdesc=cols[3],qn=parseInt(cols[4]),qtext=cols[5],a=cols[6],opts=cols[7].split('|||'),tip=cols[8];
-      if(!cur||cur.id!==pid){cur={id:pid,name:pname,s:psub,d:pdesc,q:[]};DATA.phases.push(cur)}
-      cur.q.push({q:qtext,a:a.includes('|||')?a.split('|||'):a,o:opts,t:tip});
-    }
-    render();
-  }catch(e){alert('Failed to load questions. Check connection.');console.error(e)}
+    DATA=buildCSVData(csv);
+    localStorage.setItem('gram_csv',csv);localStorage.setItem('gram_csv_v',Date.now().toString());
+  }catch(e){
+    try{
+      var cached=localStorage.getItem('gram_csv');
+      if(cached){DATA=buildCSVData(cached)}
+      else throw e;
+    }catch(e2){alert('Could not load questions. Check your connection and refresh.');ps.innerHTML='<div class="pin-card"><h2>Gramlingo</h2><p style="color:var(--dim)">Failed to load.</p><button class="btn btn-primary" onclick="location.reload()">Retry</button></div>';return}
+  }
+  ps.style.display='none';document.getElementById('nav-wrap').style.display='block';render();
 }
 document.getElementById('nav-wrap').style.display='none';
 

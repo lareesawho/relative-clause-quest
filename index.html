@@ -320,7 +320,7 @@ async function unlockGame(){
 document.getElementById('nav-wrap').style.display='none';
 
 // ==================== CURRICULUM DATA ====================
-const DATA = {title:'Gramlingo',phases:[
+let DATA = {title:'Gramlingo',phases:[
 {id:'rec',name:'识别定语从句',s:'你能找出定语从句吗？',d:'在句子中找出定语从句的部分',q:[
 {q:'下面哪个部分是定语从句？<br><em>The woman <u>who called me</u> is my manager.</em>',a:'who called me',o:['The woman','who called me','is my manager','my manager']},
 {q:'下面哪个部分是定语从句？<br><em>I read the book <u>that you recommended</u>.</em>',a:'that you recommended',o:['I read','the book','that you recommended','the book that']},

@@ -543,7 +543,8 @@ function check(){
   expl.className='explanation show '+(correct?'correct':'wrong');
   let displayAns=answers.map(a=>'<b>'+esc(a)+'</b>').join(' 或 ');
   let t=q.t||'';
-  expl.innerHTML=(correct?'✓ 正确！':'✗ '+displayAns)+'<br><small style="opacity:.7">'+esc(t)+'</small>';
+  let gramlinFace = correct ? 'https://raw.githubusercontent.com/lareesahu/grammar-game-ui-brainstorm/main/assets/gramlin-celebrate.png' : 'https://raw.githubusercontent.com/lareesahu/grammar-game-ui-brainstorm/main/assets/gramlin-sad.png';
+  expl.innerHTML='<img src="'+gramlinFace+'" style="width:48px;height:48px;border-radius:10px;vertical-align:middle;margin-right:8px">'+(correct?'✓ 正确！':'✗ '+displayAns)+'<br><small style="opacity:.7">'+esc(t)+'</small>';
   announce(correct?'正确！继续下一题':'答错了，答案显示在下方');
   document.getElementById('checkBtn').style.display='none';
   document.getElementById('nextBtn').style.display='inline-flex';

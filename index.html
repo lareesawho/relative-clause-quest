@@ -268,7 +268,7 @@ function parseCSV(txt){
     if(inQ){if(c==='"'){if(n==='"'){field+='"';i++}else inQ=false}else field+=c}
     else if(c==='"'){inQ=true}
     else if(c===','){row.push(field);field=''}
-    else if(c==='\\n'||c===String.fromCharCode(13)){if(c===String.fromCharCode(13)&&n==='\\n')i++;row.push(field);rows.push(row);row=[];field=''}
+    else if(c.charCodeAt(0)===10||c.charCodeAt(0)===13){if(c.charCodeAt(0)===13&&n&&n.charCodeAt(0)===10)i++;row.push(field);rows.push(row);row=[];field=''}
     else field+=c;
   }
   if(field||row.length){row.push(field);if(row.length>1)rows.push(row)}

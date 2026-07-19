@@ -284,10 +284,18 @@ function loginUser(){
     document.getElementById('nav-user').textContent = '👤 admin';
     document.getElementById('pin-screen').style.display='none';
     document.getElementById('nav-wrap').style.display='block';
-    // Load DATA minimally for TOTALS
-    var c=localStorage.getItem('gram_admin_csv')||localStorage.getItem('gram_csv');
-    if(c){try{DATA=buildCSVData(c);refreshTotals()}catch(e){}}
-    renderAdminPanel();
+    // Load DATA — try student cached CSVs, admin cache, or fresh fetch
+    (async function(){
+      var c=null;
+      var users=JSON.parse(localStorage.getItem('gram_users')||'[]');
+      for(var i=0;i<users.length;i++){var u=users[i];if(u==='admin')continue;var csv=localStorage.getItem('gram_'+u+'_csv');if(csv){c=csv;break}}
+      if(!c)c=localStorage.getItem('gram_admin_csv');
+      if(!c){
+        try{var r=await fetch('https://raw.githubusercontent.com/lareesahu/gramlingo/main/questions.csv',{cache:'reload'});if(r.ok){c=await r.text();localStorage.setItem('gram_admin_csv',c)}}catch(e){}
+      }
+      if(c){try{DATA=buildCSVData(c);refreshTotals()}catch(e){}}
+      renderAdminPanel();
+    })();
     return;
   }
   // === LOCK CHECK ===

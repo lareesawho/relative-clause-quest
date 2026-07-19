@@ -286,8 +286,7 @@ function loginUser(){
     document.getElementById('nav-wrap').style.display='block';
     // Load DATA — try student cached CSVs, admin cache, or fresh fetch
     (async function(){
-      var c=null;
-      var users=JSON.parse(localStorage.getItem('gram_users')||'[]');
+      var c=null, users=JSON.parse(localStorage.getItem('gram_users')||'[]');
       for(var i=0;i<users.length;i++){var u=users[i];if(u==='admin')continue;var csv=localStorage.getItem('gram_'+u+'_csv');if(csv){c=csv;break}}
       if(!c)c=localStorage.getItem('gram_admin_csv');
       if(!c){
@@ -361,13 +360,18 @@ function switchUser(){
 function renderAdminPanel(){
   let users = JSON.parse(localStorage.getItem('gram_users')||'[]');
   if(users.indexOf('admin')===-1){users.push('admin');localStorage.setItem('gram_users',JSON.stringify(users))}
+  // Fallback phase totals when TOTALS empty (admin logged in before any student)
+  const PT = TOTALS && Object.keys(TOTALS).length ? TOTALS : {
+    rec:5, subj:7, obj:6, subobj:6, oblq:8, gen:7, rest:8, prod:7,
+    prep_place:6, prep_time:7, prep_mixed:6, prep_prod:6
+  };
   let rows = '';
   for(let u of users){
     if(u==='admin')continue;
     let locked = localStorage.getItem('gram_'+u+'_locked')==='true';
     let p = JSON.parse(localStorage.getItem('gram_'+u+'_prog')||'{}');
     let total=0,score=0,phases=0,complete=0;
-    for(let k in p){if(k!=='_exported'){let t=TOTALS[k]||0;total+=t;score+=p[k].score||0;phases++;if(p[k].score>=Math.ceil(t*0.7))complete++}}
+    for(let k in p){if(k!=='_exported'){let t=PT[k]||0;total+=t;score+=p[k].score||0;phases++;if(p[k].score>=Math.ceil(t*0.7))complete++}}
     let pct = total?Math.round(score/total*100):0;
     let status = locked?'<span style="color:var(--red)">🔒 Locked</span>':'<span style="color:var(--green)">✅ Active</span>';
     let barW = pct+'%';
